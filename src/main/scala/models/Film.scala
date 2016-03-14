@@ -6,7 +6,8 @@ import play.api.libs.json._
 case class Film(
                  timestamp: String,
                  name: String,
-                 additionalInfo: JsValue
+                 additionalInfo: JsValue,
+                 author: Option[Author]
                )
 
 object Film {
@@ -15,7 +16,8 @@ object Film {
     (
       (__ \ "startTimestamp").read[String] and
         (__ \ "name").read[String] and
-        (__ \ "additionalInfo").read[JsValue]
+        (__ \ "additionalInfo").read[JsValue] and
+        (__ \ "author").readNullable[Author]
       ) (Film.apply _)
   }
 
@@ -23,7 +25,20 @@ object Film {
     (
       (__ \ "startTimestamp").write[String] and
         (__ \ "name").write[String] and
-        (__ \ "additionalInfo").write[JsValue]
+        (__ \ "additionalInfo").write[JsValue] and
+        (__ \ "author").writeNullable[Author]
       ) (unlift(Film.unapply))
+  }
+}
+
+case class Author(name: String)
+
+object Author {
+  implicit val reads: Reads[Author] = {
+    __.read[String].map(Author(_))
+  }
+
+  implicit val writes: Writes[Author] = {
+    __.write[String].contramap(_.name)
   }
 }
