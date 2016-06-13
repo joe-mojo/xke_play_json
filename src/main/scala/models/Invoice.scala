@@ -18,18 +18,12 @@ case class InvoiceLine(product: String, discount: Option[Discount], quantity: In
 case class Discount(label: String, value: Double)
 
 object Discount {
-  implicit val reads: Reads[Discount] = (
-      (__ \ "label").read[String] and
-          (__ \ "value").read[Double]
-      ) (Discount.apply _)
+  //We have a free Discount reader because Discount has only mandatory attributes of basic type
+  implicit val reads: Reads[Discount] = Json.reads[Discount]
 }
 
 object InvoiceLine {
-  implicit val reads: Reads[InvoiceLine] = (
-      (__ \ "product").read[String] and
-          (__ \ "discount").readNullable[Discount] and
-          (__ \ "quantity").read[Int] and
-          (__ \ "unitPrice").read[Int]
-      ) (InvoiceLine.apply _)
+  //We have a free Discount reader because Discount has attributes of basic type and an attributes of a type with a known reader (Discount)
+  implicit val reads: Reads[InvoiceLine] = Json.reads[InvoiceLine]
 }
 
