@@ -15,7 +15,7 @@ object Customer {
     (
         (__ \ "firstName").read[String] and
         (__ \ "lastName").read[String] and
-        Reads.of[Address] //A Reads[Adress] must be defined, and it will be passed the complete JSON
+        Reads.of[Address] //A Reads[Address] must be defined, and it will be passed the complete JSON
     )(Customer.apply _)
   }
 
@@ -43,7 +43,7 @@ object Address {
   implicit val reads: Reads[Address] = Json.reads[Address]
 }
 
-//TODO add constraint on string value \d+(?:\s?[a-zA-Z])*|\d+-\d+
+//TODO add constraint on string value \d+(?:\s?[a-zA-Z]+)?|\d+-\d+
 case class AddressNumber(value: String) extends AnyVal {
   override def toString = value
 }
