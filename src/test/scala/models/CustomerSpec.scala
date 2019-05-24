@@ -3,7 +3,7 @@ package models
 import org.scalatest.{Inside, _}
 import play.api.libs.json.{JsObject, JsString, JsSuccess, Json}
 
-class CustomerSpec extends FunSpec with ShouldMatchers with Inside {
+class CustomerSpec extends FunSpec with Matchers with Inside {
   describe("A Customer") {
     it("should parse a JSON with Address attributes at top-level and no state"){
       val inputJson =

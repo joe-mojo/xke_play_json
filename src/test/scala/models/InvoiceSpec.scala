@@ -1,9 +1,9 @@
 package models
 
-import org.scalatest.{FunSpec, ShouldMatchers}
+import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.{JsSuccess, Json}
 
-class InvoiceSpec extends FunSpec with ShouldMatchers {
+class InvoiceSpec extends FunSpec with Matchers {
   describe("An Invoice") {
     it("should parse invoice line with a discount") {
       val jsonInput = """{

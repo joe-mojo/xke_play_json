@@ -2,10 +2,10 @@ package models
 
 import scala.BigDecimal
 
-import org.scalatest.{FunSpec, ShouldMatchers}
+import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json._
 
-class FilmSpec extends FunSpec with ShouldMatchers{
+class FilmSpec extends FunSpec with Matchers{
   describe("A Film"){
     it("should read a simple JSON"){
       val jsonInput =

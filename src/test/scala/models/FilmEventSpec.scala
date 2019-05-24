@@ -1,9 +1,9 @@
 package models
 
-import org.scalatest.{FunSpec, Inside, ShouldMatchers}
+import org.scalatest.{FunSpec, Inside, Matchers}
 import play.api.libs.json._
 
-class FilmEventSpec extends FunSpec with ShouldMatchers with Inside{
+class FilmEventSpec extends FunSpec with Matchers with Inside{
   describe("A FilmEvent") {
     it("""should parse a JSON film event with "created" type and "film" data type""") {
       val jsonInput =
