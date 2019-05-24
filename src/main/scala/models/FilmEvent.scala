@@ -13,7 +13,7 @@ case class FilmCreated(data: Film) extends FilmEvent
 
 object FilmCreated {
 
-  implicit val reads: Reads[FilmCreated] = Reads { (value: JsValue) => value match {
+  implicit val reads: Reads[FilmCreated] = Reads { value: JsValue => value match {
     case parsed: JsObject =>
       Try {
         ((parsed \ "eventType").as[String], (parsed \ "dataType").as[String]) match {
@@ -29,7 +29,7 @@ object FilmCreated {
 
   object fromJson {
 
-    def unapply(message: JsValue) = message.asOpt[FilmCreated]
+    def unapply(message: JsValue): Option[FilmCreated] = message.asOpt[FilmCreated]
 
   }
 
@@ -39,7 +39,7 @@ case class FilmUpdated(data: Film) extends FilmEvent
 
 object FilmUpdated {
 
-  implicit val reads: Reads[FilmUpdated] = Reads { (value: JsValue) => value match {
+  implicit val reads: Reads[FilmUpdated] = Reads { value: JsValue => value match {
     case parsed: JsObject =>
       Try {
         ((parsed \ "eventType").as[String], (parsed \ "dataType").as[String]) match {
@@ -65,7 +65,7 @@ case class FilmDeleted(data: Film) extends FilmEvent
 
 object FilmDeleted {
 
-  implicit val reads: Reads[FilmDeleted] = Reads { (value: JsValue) => value match {
+  implicit val reads: Reads[FilmDeleted] = Reads { value: JsValue => value match {
     case parsed: JsObject =>
       Try {
         ((parsed \ "eventType").as[String], (parsed \ "dataType").as[String]) match {
