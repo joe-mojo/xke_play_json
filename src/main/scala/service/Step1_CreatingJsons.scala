@@ -6,7 +6,7 @@ import scala.util.Try
 
 object Step1_CreatingJsons {
 
-	//1.1 Create a JSON parsing a String
+	//TODO 1.1 Create a JSON parsing a String
 	private final val snatch =
 		"""
 		  |{
@@ -24,7 +24,7 @@ object Step1_CreatingJsons {
 	}
 
 	/*
-	  1.2 Use Json.* to create a object representing this JSON :
+	  TODO 1.2 Use Json.* to create a object representing this JSON :
 	   {
 	     "type": "Point",
 	     "coordinates": [2.3088449, 48.8753487]
@@ -38,7 +38,7 @@ object Step1_CreatingJsons {
 	}
 
 	/*
-	  1.3 Use JsPath to check if the given Film, passed as JSON object, has a name being a string and an imdbScore being a number from 0 to 10 (inclusive bounds)
+	  TODO 1.3 Use JsPath to check if the given Film, passed as JSON object, has a name being a string and an imdbScore being a number from 0 to 10 (inclusive bounds)
 	  Return a (Boolean, Boolean) to tell if (name, idmbScore) are corrects. Remember, imdbScore is under "additionalInfo" sub-document.
 	  hint: validate
 	 */
@@ -50,15 +50,15 @@ object Step1_CreatingJsons {
 	}
 
 	/*
-	  1.4 Use JsPath to check imdbScore again, but this time we add one condition: valid "string" scores (like "5.2" with double quotes)
+	  TODO 1.4 Use JsPath to check imdbScore again, but this time we add one condition: valid "string" scores (like "5.2" with double quotes)
 	  must NOT be coerced to Number and return false
 	 */
 	def checkImdbScore(jsFilm: JsObject): Boolean = {
 		(jsFilm \ "additionalInfo" \ "imdbScore").validate[JsNumber].fold(_ => false, n => n.value >= 0 && n.value <= 10)
 	}
 
-	//1.5 See inside JsSuccess and JSError
+	//TODO 1.5 See inside JsSuccess and JSError
 
-	//1.6 validate using JsSuccess and JsError instead of Boolean
+	//TODO 1.6 validate using JsSuccess and JsError instead of Boolean
 
 }

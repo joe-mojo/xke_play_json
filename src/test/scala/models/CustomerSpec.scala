@@ -1,7 +1,7 @@
 package models
 
 import org.scalatest.{Inside, _}
-import play.api.libs.json.{JsObject, JsString, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsObject, JsPath, JsString, JsSuccess, Json, JsonValidationError, KeyPathNode}
 
 class CustomerSpec extends FunSpec with Matchers with Inside {
   describe("A Customer") {
@@ -20,10 +20,8 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
       val validated = Json.parse(inputJson).validate[Customer]
 
       validated should matchPattern {
-        case JsSuccess(_, _) =>
+        case JsSuccess(Customer("Laurent", "Outang", Address(AddressNumber("3 Bis"), Street("rue Pin"), PostalCode("69042"), "Apéro-Sur-Le Coudonzeur", None, "France")), _) =>
       }
-
-      validated.get should be(Customer("Laurent", "Outang", Address("3 Bis", "rue Pin", "69042", "Apéro-Sur-Le Coudonzeur", None, "France")))
     }
 
     it("should parse a JSON with Address attributes at top-level and a defined state"){
@@ -42,10 +40,8 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
       val validated = Json.parse(inputJson).validate[Customer]
 
       validated should matchPattern {
-        case JsSuccess(_, _) =>
+        case JsSuccess(Customer("Paul", "Dance", Address(AddressNumber("1337"), Street("John F. Kennedy avenue"), PostalCode("42000"), "Dallas", Some("Texas"), "USA")), _) =>
       }
-
-      validated.get should be(Customer("Paul", "Dance", Address("1337", "John F. Kennedy avenue", "42000", "Dallas", Some("Texas"), "USA")))
     }
 
     it("should be written as JSON with Address attributes at top-level and no state") {
@@ -60,10 +56,11 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
           |  "country": "France"
         }""".stripMargin
       val expectedJsObject = Json.parse(expectedJson).as[JsObject]
-
-      Json.toJson(
-        Customer("Laurent", "Outang", Address("3 Bis", "rue Pin", "69042", "Apéro-Sur-Le Coudonzeur", None, "France"))
-      ) should be(expectedJsObject)
+      AddressNumber("3 Bis").map { n =>
+          Json.toJson(
+              Customer("Laurent", "Outang", Address(n, "rue Pin", "69042", "Apéro-Sur-Le Coudonzeur", None, "France"))
+          )
+      } should contain(expectedJsObject)
 
     }
 
@@ -81,9 +78,11 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
         }""".stripMargin
       val expectedJsObject = Json.parse(expectedJson).as[JsObject]
 
-      Json.toJson(
-        Customer("Paul", "Dance", Address("1337", "John F. Kennedy avenue", "42000", "Dallas", Some("Texas"), "USA"))
-      ) should be(expectedJsObject)
+      AddressNumber("1337").map { n =>
+          Json.toJson(
+              Customer("Paul", "Dance", Address(n, "John F. Kennedy avenue", "42000", "Dallas", Some("Texas"), "USA"))
+          )
+      } should contain(expectedJsObject)
 
     }
 
@@ -102,10 +101,8 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
         val validated = Json.parse(inputJson).validate[Address]
 
         validated should matchPattern {
-          case JsSuccess(_, _) =>
+          case JsSuccess(Address(AddressNumber("3 Bis"), Street("rue Pin"), PostalCode("69042"), "Apéro-Sur-Le Coudonzeur", None, "France"), _) =>
         }
-
-        validated.get should be(Address("3 Bis", "rue Pin", "69042", "Apéro-Sur-Le Coudonzeur", None, "France"))
       }
 
       it("should read a JSON with defined state ") {
@@ -122,10 +119,27 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
         val validated = Json.parse(inputJson).validate[Address]
 
         validated should matchPattern {
-          case JsSuccess(_, _) =>
+          case JsSuccess(Address(AddressNumber("1337"), Street("John F. Kennedy avenue"), PostalCode("42000"), "Dallas", Some("Texas"), "USA"), _) =>
         }
+      }
 
-        validated.get should be(Address("1337", "John F. Kennedy avenue", "42000", "Dallas", Some("Texas"), "USA"))
+      it("should raise an error if address number is invalid") {
+          val inputJson = """{
+                          |  "number": "leet",
+                          |  "street": "John F. Kennedy avenue",
+                          |  "postalCode": "42000",
+                          |  "city": "Dallas",
+                          |  "country": "USA",
+                          |  "state": "Texas"
+                          |}""".stripMargin
+
+          val validated = Json.parse(inputJson).validate[Address]
+
+          validated should matchPattern {
+              case JsError(List(
+                (JsPath(KeyPathNode("number") :: Nil), List(JsonValidationError(List("string.not.matching.addressnumber"), _*)))
+              )) =>
+          }
       }
 
       it("should be writen as JSON without state") {
@@ -139,9 +153,11 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
         }""".stripMargin
         val expectedJsObject = Json.parse(expectedJson).as[JsObject]
 
-        Json.toJson(
-          Address("3 Bis", "rue Pin", "69042", "Apéro-Sur-Le Coudonzeur", None, "France")
-        ) should  be(expectedJsObject)
+        AddressNumber("3 Bis").map {n =>
+            Json.toJson(
+                Address(n, "rue Pin", "69042", "Apéro-Sur-Le Coudonzeur", None, "France")
+            )
+        }should contain(expectedJsObject)
       }
 
       it("should be writen as JSON with a defined state") {
@@ -156,9 +172,11 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
         }""".stripMargin
         val expectedJsObject = Json.parse(expectedJson).as[JsObject]
 
-        Json.toJson(
-          Address("1337", "John F. Kennedy avenue", "42000", "Dallas", Some("Texas"), "USA")
-        ) should  be(expectedJsObject)
+        AddressNumber("1337").map { n =>
+            Json.toJson(
+                Address(n, "John F. Kennedy avenue", "42000", "Dallas", Some("Texas"), "USA")
+            )
+        } should contain(expectedJsObject)
       }
 
       describe("number") {
@@ -166,8 +184,11 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
           Json.parse(
             """
               |"3 Bis"
-            """.stripMargin).asOpt[AddressNumber] should contain(AddressNumber("3 Bis"))
+            """.stripMargin).validate[AddressNumber] should matchPattern{
+              case JsSuccess(AddressNumber("3 Bis"), _) =>
+          }
         }
+
         it("should be written as a JSON string"){
           Json.toJson(AddressNumber("3 Bis")) should be(JsString("3 Bis"))
         }
@@ -180,6 +201,7 @@ class CustomerSpec extends FunSpec with Matchers with Inside {
               |"rue Tabaga"
             """.stripMargin).asOpt[Street] should contain(Street("rue Tabaga"))
         }
+
         it("should be written as a JSON string"){
           Json.toJson(Street("rue Tabaga")) should be(JsString("rue Tabaga"))
         }

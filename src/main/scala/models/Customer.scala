@@ -11,6 +11,12 @@ case class Customer(
 )
 
 object Customer {
+  /*
+    TODO 2.7 create a Reads for Customer. Address root attributes must be at the same level as Customer attributes.
+    TODO 2.7.1 create Reads for AddressNumber, Street and PostalCode (same as models.Author)
+    TODO 2.7.2 create Reads for Address
+    TODO 2.7.3 create Reads for Customer
+   */
   implicit val reads: Reads[Customer] = {
     (
         (__ \ "firstName").read[String] and
@@ -47,15 +53,24 @@ object Address {
 }
 
 //TODO add constraint on string value \d+(?:\s?[a-zA-Z]+)?|\d+-\d+
-case class AddressNumber(value: String) extends AnyVal {
+case class AddressNumber(private val value: String) extends AnyVal {
   override def toString = value
 }
 object AddressNumber {
-  implicit val reads: Reads[AddressNumber] = Reads.of[String].map(AddressNumber(_))
+  final val addressNumberRegx = """\d+(?:\s?[a-zA-Z]+)?|\d+-\d+""".r
+  implicit val reads: Reads[AddressNumber] = Reads.of[String].collect(JsonValidationError("string.not.matching.addressnumber")) {
+    case n@addressNumberRegx() => new AddressNumber(n)
+  }
   implicit val writes: Writes[AddressNumber] = Writes[AddressNumber] { number =>
     JsString(number.value)
   }
-  implicit def fromString(value: String): AddressNumber = AddressNumber(value)
+
+  def apply(value: String): Option[AddressNumber] = {
+    value match {
+      case addressNumberRegx() => Some(new AddressNumber(value))
+      case other => None
+    }
+  }
 }
 
 case class Street(value: String) extends AnyVal {

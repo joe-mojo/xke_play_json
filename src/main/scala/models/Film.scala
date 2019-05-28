@@ -11,7 +11,12 @@ case class Film(
                )
 
 object Film {
-
+  /*
+    TODO 2.5 Create a custom Reads for Film. In expected JSON, the timestamp attribute is named "startTimestamp"
+    Examples:
+    {"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : {"whatever": "you want"}, "author": "Guy Richie"}
+    {"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}
+   */
   implicit val reads: Reads[Film] = {
     (
       (__ \ "startTimestamp").read[Long] and
@@ -34,9 +39,15 @@ object Film {
 case class Author(name: String)
 
 object Author {
-  implicit val reads: Reads[Author] = {
+  /*
+  TODO 2.4 Create a Reads for Author. Inside Json, an Author is only a String:  {..., "author": "Lana Wachowsky", ...}
+  There is 2 ways of doing this.
+   */
+  val readsByPath: Reads[Author] = {
     __.read[String].map(Author(_))
   }
+  val readsByStringReader: Reads[Author] = Reads.of[String].map(Author.apply)
+  implicit val reads: Reads[Author] = readsByStringReader
 
   implicit val writes: Writes[Author] = {
     __.write[String].contramap(_.name)
