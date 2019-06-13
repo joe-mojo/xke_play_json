@@ -5,20 +5,22 @@ import models.{Address, AddressNumber, Author, Discount, Film, FilmType, Invoice
 import org.scalatest.{Inside, Matchers, WordSpec}
 import play.api.libs.json._
 
+import scala.math.BigDecimal
+
 class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 
 	"A Reads[Discount]" when {
 		import models.Discount.reads
 		"parsing a valid JSON" should {
 			"validate it as Discount" in {
-				Json.parse("""{ "label": "Family discount", "value": 0.25 }""").validate[Discount] should matchPattern {
-					case JsSuccess(Discount("Family discount", 0.25D), _) =>
+				inside(Json.parse("""{ "label": "Family discount", "value": 0.25 }""").validate[Discount]) {
+					case JsSuccess(Discount("Family discount", value), _) => value shouldBe BigDecimal("0.25")
 				}
-				Json.parse("""{ "label": "Unemployed", "value": 0.5 }""").validate[Discount] should matchPattern {
-					case JsSuccess(Discount("Unemployed", 0.5D), _) =>
+				inside(Json.parse("""{ "label": "Unemployed", "value": 0.5 }""").validate[Discount]) {
+					case JsSuccess(Discount("Unemployed", value), _) => value shouldBe BigDecimal("0.5")
 				}
-				Json.parse("""{ "label": "Winter sales", "value": 0.6, "useless": "attribute" }""").validate[Discount] should matchPattern {
-					case JsSuccess(Discount("Winter sales", 0.6D), _) =>
+				inside(Json.parse("""{ "label": "Winter sales", "value": 0.6, "useless": "attribute" }""").validate[Discount]) {
+					case JsSuccess(Discount("Winter sales", value), _) => value shouldBe BigDecimal("0.6")
 				}
 			}
 		}
@@ -32,7 +34,7 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 				}
 				Json.parse("""{ "label": "Family discount", "value": "A"}""").validate[Discount] should matchPattern {
 					case JsError(List(
-					(`valueErrPath`, List(JsonValidationError(List("error.expected.jsnumber"), _*)))
+					(`valueErrPath`, List(JsonValidationError(List("error.expected.numberformatexception"), _*)))
 					)) =>
 				}
 
@@ -55,11 +57,13 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 		import models.InvoiceLine
 		"parsing a valid JSON" should {
 			"validate it as InvoiceLine" in {
-				Json.parse("""{ "product": "MacBook Pro mid-2019", "quantity": 5, "unitPrice": 2799 }""").validate[InvoiceLine] should matchPattern {
-					case JsSuccess(InvoiceLine("MacBook Pro mid-2019", None, 5, 2799), _) =>
+				inside(Json.parse("""{ "product": "MacBook Pro mid-2019", "quantity": 5, "unitPrice": 2799 }""").validate[InvoiceLine]) {
+					case JsSuccess(InvoiceLine("MacBook Pro mid-2019", None, 5, unitPrice), _) => unitPrice shouldBe BigDecimal(2799)
 				}
-				Json.parse("""{ "product": "MacBook Pro mid-2019", "quantity": 5, "unitPrice": 2799, "discount": {"label": "Black Friday", "value": 0.05}}""").validate[InvoiceLine] should matchPattern {
-					case JsSuccess(InvoiceLine("MacBook Pro mid-2019", Some(Discount("Black Friday", 0.05D)), 5, 2799), _) =>
+				inside(Json.parse("""{ "product": "MacBook Pro mid-2019", "quantity": 5, "unitPrice": 2799, "discount": {"label": "Black Friday", "value": 0.05}}""").validate[InvoiceLine]) {
+					case JsSuccess(InvoiceLine("MacBook Pro mid-2019", Some(Discount("Black Friday", discountValue)), 5, unitPrice), _) =>
+						unitPrice shouldBe BigDecimal(2799)
+						discountValue shouldBe BigDecimal("0.05")
 				}
 			}
 		}
@@ -69,7 +73,7 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 		import models.Invoice
 		"parsing a valid JSON" should {
 			"validate it as InvoiceLine" in {
-				Json.parse(
+				inside(Json.parse(
 					"""
 					  |{
 					  |  "lines": [
@@ -77,11 +81,14 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 					  |    { "product": "MacBook Pro mid-2019 15\" 32Go i9", "quantity": 1, "unitPrice": 3639, "discount": {"label": "Black Friday", "value": 0.05}}
 					  |  ]
 					  |}
-					""".stripMargin).validate[Invoice] should matchPattern {
+					""".stripMargin).validate[Invoice]) {
 					case JsSuccess(Invoice(Seq(
-						InvoiceLine("""MacBook Pro mid-2019 15"""", None, 5, 2799),
-						InvoiceLine("""MacBook Pro mid-2019 15" 32Go i9""", Some(Discount("Black Friday", 0.05D)), 1, 3639)
+						InvoiceLine("""MacBook Pro mid-2019 15"""", None, 5, price1),
+						InvoiceLine("""MacBook Pro mid-2019 15" 32Go i9""", Some(Discount("Black Friday", discountValue)), 1, price2)
 					)), _) =>
+						price1 shouldBe BigDecimal(2799)
+						discountValue shouldBe BigDecimal("0.05")
+						price2 shouldBe BigDecimal(3639)
 				}
 			}
 		}
