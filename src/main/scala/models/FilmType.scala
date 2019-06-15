@@ -42,9 +42,16 @@ object FilmType {
     case JsString(Drama.value) => JsSuccess(Drama)
     case _ => JsError("Unclassified film")
   }
-  implicit val reads = readsWithReadsApply
+  implicit val reads: Reads[FilmType] = readsWithReadsApply // <-- choose you preferred Reads[FilmType]
 
-  implicit val writes: Writes[FilmType] = new Writes[FilmType] {
+  /*
+   TODO 3.6 Create a Writes for the sealed trait FilmType.
+   As with 2.6, there is 2 syntaxes. One by implementing writes method of Writes trait, another by passing a function to Writes.apply.
+   Once again, the second one is more concise.
+   */
+  implicit val writesWithWritesImpl: Writes[FilmType] = new Writes[FilmType] {
     override def writes(o: FilmType): JsValue = JsString(o.value)
   }
+  val writesWithWritesApply: Writes[FilmType] = Writes(filmType => JsString(filmType.value))
+  implicit val writes: Writes[FilmType] = writesWithWritesApply // <-- choose you preferred Writes[FilmType]
 }

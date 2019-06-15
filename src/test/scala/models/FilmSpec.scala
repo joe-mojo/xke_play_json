@@ -1,11 +1,10 @@
 package models
 
 import scala.BigDecimal
-
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.{FunSpec, Inside, Matchers}
 import play.api.libs.json._
 
-class FilmSpec extends FunSpec with Matchers{
+class FilmSpec extends FunSpec with Matchers with Inside {
   describe("A Film"){
     it("should read a simple JSON"){
       val jsonInput =
@@ -20,13 +19,12 @@ class FilmSpec extends FunSpec with Matchers{
           |}""".stripMargin
 
       val validatedInput = Json.parse(jsonInput).validate[Film]
-      validatedInput should matchPattern {
-        case JsSuccess(value, path) =>
+      inside(validatedInput) {
+        case JsSuccess(value, _) => value should be(Film(1400000000L, "Spaceballs", Json.obj(
+          "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
+          "notes" -> "Mel Brooks and Rick Moranis in a delirium"
+        ), Some(Author("Mel Brooks"))))
       }
-      validatedInput.get should be(Film(1400000000L, "Spaceballs", Json.obj(
-        "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
-        "notes" -> "Mel Brooks and Rick Moranis in a delirium"
-      ), Some(Author("Mel Brooks"))))
     }
   }
 
@@ -38,9 +36,12 @@ class FilmSpec extends FunSpec with Matchers{
         | "additionalInfo": {}
         |}""".stripMargin
 
-    Json.parse(jsonInput).validate[Film] should matchPattern {
-      case JsSuccess(value, path) =>
+    inside(Json.parse(jsonInput).validate[Film]) {
+      case JsSuccess(value, _) => value should be(Film(1400000000L, "Spaceballs", Json.obj(), None))
     }
+    /* Just for example: instead of "validate" (that is returning an Either-like functor), we can use "as" (that is returning the right type but
+       raising exception in case of error)
+     */
     Json.parse(jsonInput).as[Film] should be(Film(1400000000L, "Spaceballs", Json.obj(), None))
   }
 
@@ -50,7 +51,7 @@ class FilmSpec extends FunSpec with Matchers{
         | "startTimestamp": 1400000000,
         | "name": "Spaceballs",
         | "additionalInfo": "Nice",
-        |  "author": "Mel Brooks"
+        | "author": "Mel Brooks"
         |}""".stripMargin
 
     val jsonInputWithArray =
@@ -58,7 +59,7 @@ class FilmSpec extends FunSpec with Matchers{
         | "startTimestamp": 1400000000,
         | "name": "Spaceballs",
         | "additionalInfo": [42, 1337, "Bim !"],
-        |  "author": "Mel Brooks"
+        | "author": "Mel Brooks"
         |}""".stripMargin
 
     val jsonInputWithNull =
@@ -66,7 +67,7 @@ class FilmSpec extends FunSpec with Matchers{
         | "startTimestamp": 1400000000,
         | "name": "Spaceballs",
         | "additionalInfo": null,
-        |  "author": "Mel Brooks"
+        | "author": "Mel Brooks"
         |}""".stripMargin
 
     val validatedInputs = Seq(jsonInputWithArray, jsonInputWithNull, jsonInputWithString)

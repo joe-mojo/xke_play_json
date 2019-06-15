@@ -12,10 +12,10 @@ case class Customer(
 
 object Customer {
   /*
-    TODO 2.7 create a Reads for Customer. Address root attributes must be at the same level as Customer attributes.
-    TODO 2.7.1 create Reads for AddressNumber, Street and PostalCode (same as models.Author)
-    TODO 2.7.2 create Reads for Address
-    TODO 2.7.3 create Reads for Customer
+    TODO 2.8 create a Reads for Customer. Address root attributes must be at the same level as Customer attributes.
+    TODO 2.8.1 create Reads for AddressNumber, Street and PostalCode (same as models.Author)
+    TODO 2.8.2 create Reads for Address
+    TODO 2.8.3 create Reads for Customer
    */
   implicit val reads: Reads[Customer] = {
     (

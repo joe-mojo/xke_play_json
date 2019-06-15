@@ -44,4 +44,6 @@ class Step3_WritesSpec extends WordSpec with Matchers {
 			Json.toJson(Invoice(List(invoiceLineWithoutDiscount, invoiceLineWithDiscount))) shouldBe jsonInvoice
 		}
 	}
+
+	//Looking for tests about Film ? See models.FilmSpec
 }
