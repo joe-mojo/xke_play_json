@@ -13,7 +13,7 @@ case class Customer(
 object Customer {
   /*
     TODO 2.8 create a Reads for Customer. Address root attributes must be at the same level as Customer attributes.
-    TODO 2.8.1 create Reads for AddressNumber, Street and PostalCode (same as models.Author)
+    TODO 2.8.1 create Reads for AddressNumber, Street and PostalCode (same as models.Author).
     TODO 2.8.2 create Reads for Address
     TODO 2.8.3 create Reads for Customer
    */
@@ -24,7 +24,12 @@ object Customer {
         Reads.of[Address] //A Reads[Address] must be defined, and it will be passed the complete JSON
     )(Customer.apply _)
   }
-
+  /*
+   TODO 3.8 create writes for Customer. Address root attributes must be at the same level as Customer attributes.
+   TODO 3.8.1 create writes for AddressNumber, Street and PostalCode
+   TODO 3.8.2 create writes for Address
+   TODO 3.8.3 create writes for Customer
+   */
   implicit val writes: Writes[Customer] = {
     (
         (__ \ "firstName").write[String] and
@@ -52,12 +57,12 @@ object Address {
 
 }
 
-//TODO add constraint on string value \d+(?:\s?[a-zA-Z]+)?|\d+-\d+
 case class AddressNumber(private val value: String) extends AnyVal {
   override def toString = value
 }
 object AddressNumber {
   final val addressNumberRegx = """\d+(?:\s?[a-zA-Z]+)?|\d+-\d+""".r
+  //TODO Note about 2.8.1: AddressNumber can be build only for strings matching the above regex.
   implicit val reads: Reads[AddressNumber] = Reads.of[String].collect(JsonValidationError("string.not.matching.addressnumber")) {
     case n@addressNumberRegx() => new AddressNumber(n)
   }
