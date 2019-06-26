@@ -69,5 +69,4 @@ object Step4 {
 			Right(json)
 		}
 	}
-	//TODO tests for 4
 }

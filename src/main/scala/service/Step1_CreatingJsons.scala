@@ -6,7 +6,7 @@ import scala.util.Try
 
 object Step1_CreatingJsons {
 
-	//TODO 1.1 Create a JSON parsing a String
+	//TODO 1.1 Create a JSON by parsing a String
 	private final val snatch =
 		"""
 		  |{
