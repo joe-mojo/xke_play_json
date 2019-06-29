@@ -18,7 +18,7 @@ See [class construction](https://www.playframework.com/documentation/2.7.x/Scala
 
 See [traversing a JSON structure](https://www.playframework.com/documentation/2.7.x/ScalaJson#Traversing-a-JsValue-structure)
 
-## validate or as ?
+## `validate` or `as` ?
 
 ### as
 
@@ -39,4 +39,4 @@ Complete [Step1_CreatingJsons](../src/main/scala/service/Step1_CreatingJsons.sca
 
 ## Next
 
-See [Step2: Reads](./Step2.md)
+Checkout Step2 branch and go to [Step2: Reads](./Step2.md)

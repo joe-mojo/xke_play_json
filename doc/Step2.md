@@ -15,6 +15,7 @@ Sometime, life is easy. Play JSON comes with all needed implicits to read
 
 So thats why `(__ \ "name").validate[String]` is always compiling (for example).
 
+### Semi-automatic Reads
 If your model has only supported attribute types, you have can get a `Reads` for that type nearly for free.
 
 ```scala
@@ -65,28 +66,38 @@ implicit val ToyReads: Reads[Toy] = Json.reads[Toy]
 ## Custom Reads
 See [value to model](https://www.playframework.com/documentation/2.7.x/ScalaJson#JsValue-to-a-model) and [Reads](https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators#Reads)
 
+As you can see, you 
+ 
+ - create path request and call the `read` method of the created `JsPath` to create a Reads for the type of the attribute in your model that maps to this path.
+ - combine all these Reads with `and` from `play.api.libs.functional.syntax._`
+ - get a `FunctionalBuilder[Reads]` that needs a function taking all elements of the type of your Reads and giving an instance of the model. Hence the reference to the `apply` method of your model's companion object.
+ - get a Reads of the model returned by the `FunctionalBuilder`
+
+The whole is a function that returns the Reads instance 
+ 
 ## Add constraints on reads values
 
 See [validation with Reads](https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators#Validation-with-Reads)
 
 ## Exercise
 
-Complete TODOs in the followings:
+Complete TODOs 2.x in the followings:
+
  - [`models.Invoice`](../src/main/scala/models/Invoice.scala) 
  - [`models.Film`](../src/main/scala/models/Film.scala)
  - [`models.FilmType`](../src/main/scala/models/FilmType.scala)
  - [`models.FilmEvent`](../src/main/scala/models/FilmEvent.scala)
  - [`models.Customer`](../src/main/scala/models/Customer.scala)
  
-These tests must compile and pass:
+These tests about Reads must pass in tje following test suites:
+
  - [`Step2_ReadsSpec`](../src/test/scala/service/Step2_ReadsSpec.scala)
  - [`InvoiceSpec`](../src/test/scala/models/InvoiceSpec.scala)
  - [`FilmSpec`](../src/test/scala/models/FilmSpec.scala)
  - [`FilmEventSpec`](../src/test/scala/models/FilmEventSpec.scala)
  - [`CustomerSpec`](../src/test/scala/models/CustomerSpec.scala)
- 
 
 
 ## Next
 
-See [Step3: Writes](./Step3.md)
+Checkout Step3 and go to [Step3: Writes](./Step3.md)
