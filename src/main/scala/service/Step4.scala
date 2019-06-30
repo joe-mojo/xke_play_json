@@ -52,7 +52,7 @@ object Step4 {
 	//TODO 4.3.2 Create a Writes[Film] using explicit pathes (__ \ "attr").writes... and Film.unapply
 	// BUT You need one more thing because Film.unapply is giving all attributes in a tuple and
 	// we want only 2 of them.
-	def ignore[T] = OWrites[T](_ => Json.obj())
+	def ignore[T]: OWrites[T] = OWrites[T](_ => Json.obj())
 	def writesWithIgnore: Writes[Film] = {
 		(
 				ignore and
