@@ -26,6 +26,15 @@ Rendering JSON from a model is achieved with `Json.toJson[T](value: T)` that wil
 After a short intro on JsValue and JsPath, we will study how to create Reads and Writes.
 
 ## Start of trail
+
+Before starting, be aware that some steps have sub-steps (like 3.7.4 for example). Some sub-steps have their own branch because there is different difficulty level.
+For example, if you finished all sub-steps of "Step1" branch, you can checkout "Step2" to get Step1 solutions.
+Once you finished Step 2.6, you see that you chan checkout "Step_2.7.1_easy" or ""Step_2.7.1_hard" depending on how much you want to be hurt.
+
+WARNING: checkout of any branch will give solution for former steps !
+
+General advice: when starting a Step N (by doing a checkout on "StepN" branch), always do `git branch -a` to remember if the current step have difficulty levels
+
 To start, checkout `Step1` branch and follow [Step1 guide](doc/Step1.md)
 
 
