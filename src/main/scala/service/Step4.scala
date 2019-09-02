@@ -1,16 +1,27 @@
 package service
 
-import models.{Author, Film, FilmUpdated}
+import models.{Author, Film, FilmType, FilmUpdated}
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
 import scala.collection.mutable
 
 object Step4 {
-	//TODO Step 4: 2 real life cases
 	val db: mutable.Map[String, Film] = mutable.Map(
-		"tt0208092" -> Film(974271600000L, "Snatch", Json.obj("imdbScore" -> JsNumber(8.3D), "imdbId" -> "tt0208092"), Some(Author("Guy Ritchie"))),
-		"tt0094012" -> Film(1400000000L, "Spaceballs", Json.obj("imdbScore" -> JsNumber(7.1D), "imdbId" -> "tt0094012"), Some(Author("Mel Brooks")))
+		"tt0208092" -> Film(
+			974271600000L,
+			"Snatch",
+			Json.obj("imdbScore" -> JsNumber(8.3D), "imdbId" -> "tt0208092"),
+			Some(Author("Guy Ritchie")),
+			Seq(FilmType.Comedy, FilmType.Crime)
+		),
+		"tt0094012" -> Film(
+			1400000000L,
+			"Spaceballs",
+			Json.obj("imdbScore" -> JsNumber(7.1D), "imdbId" -> "tt0094012"),
+			Some(Author("Mel Brooks")),
+			Seq(FilmType.Comedy, FilmType.SciFi)
+		)
 	)
 	//TODO 4.1 implement readsOnlyAdditionalInfo that take a Film and return a Reads[Film] that actually reads only additionalInfo from input JSON,
 	//  and replace all other attributes by the specified film attributes
@@ -19,7 +30,8 @@ object Step4 {
 				Reads.pure[Long](filmFromDb.timestamp) and
 				Reads.pure[String](filmFromDb.name) and
 				(__ \ "additionalInfo").read[JsObject] and
-				Reads.pure(filmFromDb.author)
+				Reads.pure(filmFromDb.author) and
+				Reads.pure(filmFromDb.types)
 		)(Film.apply _)
 	}
 
@@ -58,7 +70,8 @@ object Step4 {
 				ignore and
 				(__ \ "name").write[String] and
 				ignore and
-				(__ \ "author").writeNullable[Author]
+				(__ \ "author").writeNullable[Author] and
+				(__ \ "types").write[Seq[FilmType]]
 		)(unlift(Film.unapply))
 	}
 

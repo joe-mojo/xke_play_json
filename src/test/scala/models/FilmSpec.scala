@@ -5,6 +5,7 @@ import org.scalatest.{FunSpec, Inside, Matchers}
 import play.api.libs.json._
 
 class FilmSpec extends FunSpec with Matchers with Inside {
+  val spaceballTypes = Seq(FilmType.Comedy, FilmType.SciFi)
   describe("A Film"){
     it("should read a simple JSON"){
       val jsonInput =
@@ -15,7 +16,8 @@ class FilmSpec extends FunSpec with Matchers with Inside {
           |     "metas": ["fun", "parody"],
           |     "notes": "Mel Brooks and Rick Moranis in a delirium"
           |   },
-          |  "author": "Mel Brooks"
+          |  "author": "Mel Brooks",
+		  |  "types": ["comedy", "sci-fi"]
           |}""".stripMargin
 
       val validatedInput = Json.parse(jsonInput).validate[Film]
@@ -23,12 +25,12 @@ class FilmSpec extends FunSpec with Matchers with Inside {
         case JsSuccess(value, _) => value should be(Film(1400000000L, "Spaceballs", Json.obj(
           "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
           "notes" -> "Mel Brooks and Rick Moranis in a delirium"
-        ), Some(Author("Mel Brooks"))))
+        ), Some(Author("Mel Brooks")), spaceballTypes))
       }
     }
   }
 
-  it("should read a JSON without Author and empty object as additional infos"){
+  it("should read a JSON without Author, empty object as additional infos and an empty type list"){
     val jsonInput =
       """{
         | "startTimestamp": 1400000000,
@@ -37,12 +39,12 @@ class FilmSpec extends FunSpec with Matchers with Inside {
         |}""".stripMargin
 
     inside(Json.parse(jsonInput).validate[Film]) {
-      case JsSuccess(value, _) => value should be(Film(1400000000L, "Spaceballs", Json.obj(), None))
+      case JsSuccess(value, _) => value should be(Film(1400000000L, "Spaceballs", Json.obj(), None, Seq.empty))
     }
     /* Just for example: instead of "validate" (that is returning an Either-like functor), we can use "as" (that is returning the right type but
        raising exception in case of error)
      */
-    Json.parse(jsonInput).as[Film] should be(Film(1400000000L, "Spaceballs", Json.obj(), None))
+    Json.parse(jsonInput).as[Film] should be(Film(1400000000L, "Spaceballs", Json.obj(), None, Seq.empty))
   }
 
   it("should read a JSON with additionalInfo, when the type of JSON data is other than object"){

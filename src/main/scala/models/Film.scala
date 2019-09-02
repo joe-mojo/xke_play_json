@@ -7,7 +7,8 @@ case class Film(
 		timestamp: Long,
 		name: String,
 		additionalInfo: JsValue,
-		author: Option[Author]
+		author: Option[Author],
+		types: Seq[FilmType]
 )
 
 object Film {
@@ -18,23 +19,25 @@ object Film {
 	{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}
 	*/
 	implicit val reads: Reads[Film] = {
-	(
-	  (__ \ "startTimestamp").read[Long] and
-		(__ \ "name").read[String] and
-		(__ \ "additionalInfo").read[JsValue] and
-		(__ \ "author").readNullable[Author]
-	  ) (Film.apply _)
+		(
+			(__ \ "startTimestamp").read[Long] and
+			(__ \ "name").read[String] and
+			(__ \ "additionalInfo").read[JsValue] and
+			(__ \ "author").readNullable[Author] and
+			(__ \ "types").readWithDefault[Seq[FilmType]](Seq.empty)
+		) (Film.apply _)
 	}
 	/*
 	TODO 3.5 Create a custom Writes for Film. In expected JSON, the timestamp attribute is named "startTimestamp"
 	 */
 	implicit val writes: Writes[Film] = {
-	(
-	  (__ \ "startTimestamp").write[Long] and
-		(__ \ "name").write[String] and
-		(__ \ "additionalInfo").write[JsValue] and
-		(__ \ "author").writeNullable[Author]
-	  ) (unlift(Film.unapply))
+		(
+			(__ \ "startTimestamp").write[Long] and
+			(__ \ "name").write[String] and
+			(__ \ "additionalInfo").write[JsValue] and
+			(__ \ "author").writeNullable[Author] and
+			(__ \ "types").write[Seq[FilmType]]
+		) (unlift(Film.unapply))
 	}
 }
 

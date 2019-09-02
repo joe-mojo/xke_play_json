@@ -17,8 +17,28 @@ object FilmType {
     override val value = "comedy"
   }
 
-  case object Drama extends FilmType {
-    override val value = "drama"
+  case object Romance extends FilmType {
+    override val value = "romance"
+  }
+
+  case object SciFi extends FilmType {
+    override val value = "sci-fi"
+  }
+
+  case object Action extends FilmType {
+    override val value = "action"
+  }
+
+  case object Aventure extends FilmType {
+    override val value = "aventure"
+  }
+
+  case object Thriller extends FilmType {
+    override val value = "thriller"
+  }
+
+  case object Crime extends FilmType {
+    override val value = "crime"
   }
 
   /*
@@ -31,7 +51,12 @@ object FilmType {
     override def reads(json: JsValue): JsResult[FilmType] = json match {
       case JsString(Horror.value) => JsSuccess(Horror)
       case JsString(Comedy.value) => JsSuccess(Comedy)
-      case JsString(Drama.value) => JsSuccess(Drama)
+      case JsString(Romance.value) => JsSuccess(Romance)
+      case JsString(SciFi.value) => JsSuccess(SciFi)
+      case JsString(Action.value) => JsSuccess(Action)
+      case JsString(Aventure.value) => JsSuccess(Aventure)
+      case JsString(Thriller.value) => JsSuccess(Thriller)
+      case JsString(Crime.value) => JsSuccess(Crime)
       case _ => JsError("Unclassified film")
     }
   }
@@ -39,7 +64,11 @@ object FilmType {
   val readsWithReadsApply: Reads[FilmType] = Reads {
     case JsString(Horror.value) => JsSuccess(Horror)
     case JsString(Comedy.value) => JsSuccess(Comedy)
-    case JsString(Drama.value) => JsSuccess(Drama)
+    case JsString(Romance.value) => JsSuccess(Romance)
+    case JsString(SciFi.value) => JsSuccess(SciFi)
+    case JsString(Action.value) => JsSuccess(Action)
+    case JsString(Aventure.value) => JsSuccess(Aventure)
+    case JsString(Crime.value) => JsSuccess(Crime)
     case _ => JsError("Unclassified film")
   }
   implicit val reads: Reads[FilmType] = readsWithReadsApply // <-- choose you preferred Reads[FilmType]
@@ -49,7 +78,7 @@ object FilmType {
    As with 2.6, there is 2 syntaxes. One by implementing writes method of Writes trait, another by passing a function to Writes.apply.
    Once again, the second one is more concise.
    */
-  implicit val writesWithWritesImpl: Writes[FilmType] = new Writes[FilmType] {
+  val writesWithWritesImpl: Writes[FilmType] = new Writes[FilmType] {
     override def writes(o: FilmType): JsValue = JsString(o.value)
   }
   val writesWithWritesApply: Writes[FilmType] = Writes(filmType => JsString(filmType.value))

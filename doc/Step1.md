@@ -1,6 +1,11 @@
 Step 1: Creating JSON
 =====================
 
+## TODO
+
+ - Insert on the right guide page: [Play JSON 2.6 -> 2.7](https://www.playframework.com/documentation/2.7.x/Migration26#Play-JSON-API-changes)
+
+
 ## JSON values
 ### JSON types
  

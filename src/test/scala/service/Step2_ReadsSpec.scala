@@ -1,6 +1,6 @@
 package service
 
-import models.FilmType.{Comedy, Drama, Horror}
+import models.FilmType.{Comedy, Romance, Horror}
 import models.{Address, AddressNumber, Author, Discount, Film, FilmType, InvoiceLine, PostalCode, Street}
 import org.scalatest.{Inside, Matchers, WordSpec}
 import play.api.libs.json._
@@ -99,7 +99,7 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 		"parsing a valid JSON without author" should {
 			"validate it as Film" in {
 				Json.parse("""{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}""").validate[Film] should matchPattern {
-					case JsSuccess(Film(974271600000L, "Snatch", JsString("Whatever you want"), None), _) =>
+					case JsSuccess(Film(974271600000L, "Snatch", JsString("Whatever you want"), None, Seq()), _) =>
 				}
 			}
 		}
@@ -108,7 +108,7 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 				inside(Json.parse(
 					"""{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : {"whatever": "you want"}, "author": "Guy Richie"}"""
 				).validate[Film]){
-					case JsSuccess(Film(974271600000L, "Snatch", additionalInfo, Some(Author("Guy Richie"))), _) =>
+					case JsSuccess(Film(974271600000L, "Snatch", additionalInfo, Some(Author("Guy Richie")), Seq()), _) =>
 						additionalInfo shouldBe Json.obj("whatever" -> JsString("you want"))
 				}
 
@@ -122,8 +122,8 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 				Json.parse(""""horror"""").validate[FilmType] should matchPattern {
 					case JsSuccess(Horror, _) =>
 				}
-				Json.parse(""""drama"""").validate[FilmType] should matchPattern {
-					case JsSuccess(Drama, _) =>
+				Json.parse(""""romance"""").validate[FilmType] should matchPattern {
+					case JsSuccess(Romance, _) =>
 				}
 				Json.parse(""""comedy"""").validate[FilmType] should matchPattern {
 					case JsSuccess(Comedy, _) =>
