@@ -29,25 +29,6 @@ implicit val CatWrite = Writes[Cat] { cat =>
 }
 ```
 
-All JsValues can pattern match easily, except `JsObject` because the order of its field/value entries will count, but this not wanted because in JSON object there is no order.
-
-```scala
-import play.api.libs.json._
-Json.parse(""" "toto" """) match {
-    case JsString(str) => s"""we have the string "$str""""
-    case other => s"""Hu ? I didn't expect $other..."""
-}
-```
-Here, please note the trick on `JsNumber`: `BigDecimal` has no `unapply`. 
-```scala
-import play.api.libs.json._
-Json.parse("""["toto"], 1, true]""") match {
-    case JsArray(Seq(JsString("toto"), JsNumber(v), JsBoolean(true))) if v == BigDecimal("1")=> true
-    case other => false
-}
-```
-In the above code, `JsBoolean(true)` could be replaced with `JsTrue`.
-
 ### Using path and combinators
 
 See [Writes with combinators](https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators#Writes)
