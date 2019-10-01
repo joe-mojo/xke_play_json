@@ -1,11 +1,11 @@
 package models
 
-import scala.BigDecimal
 import org.scalatest.{FunSpec, Inside, Matchers}
 import play.api.libs.json._
 
 class FilmSpec extends FunSpec with Matchers with Inside {
-  val spaceballTypes = Seq(FilmType.Comedy, FilmType.SciFi)
+  val spaceballTypes: Seq[FilmType] = Seq(FilmType.Comedy, FilmType.SciFi)
+
   describe("A Film"){
     it("should read a simple JSON"){
       val jsonInput =
@@ -17,7 +17,7 @@ class FilmSpec extends FunSpec with Matchers with Inside {
           |     "notes": "Mel Brooks and Rick Moranis in a delirium"
           |   },
           |  "author": "Mel Brooks",
-		  |  "types": ["comedy", "sci-fi"]
+          |  "types": ["comedy", "sci-fi"]
           |}""".stripMargin
 
       val validatedInput = Json.parse(jsonInput).validate[Film]

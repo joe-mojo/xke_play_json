@@ -54,7 +54,7 @@ object Step4 {
 	}
 
 	//TODO 4.3 Create writes that hide an attribute. We're going to study 2 ways.
-	// We want a light view of Film JSON (for example: returned in an http request) with only film name and author.
+	// We want a light view of Film JSON (for example: returned in an http request) with only film, name and author.
 	//TODO 4.3.1 Create a Writes[Film] that create a JSON object with only needed attributes.
 	def writesSimpleJsObj: Writes[Film] = Writes { film =>
 		film.author.foldLeft(Json.obj("name" -> film.name)) { (jsObj, author) =>

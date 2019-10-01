@@ -6,7 +6,7 @@ Step 3: render model to JSON with Writes
 Exactly as [Reads](./Step2.md),
  
  - there is some already existing Writes.
- - if all Writes exist for a type, you gain its Writes for free. 
+ - if all Writes exist for some types, you gain the Writes of their product for free. 
  - you can create custom Writes
  - if a Writes is depending on another one, this dependency need to be already defined at the place the depending Writes is defined.
 
@@ -37,9 +37,9 @@ As you can see, you
 
  - create Writes for each attribute with a path request and a call to `write`
  - combine all writes with `and` from `play.api.libs.functional.syntax._`
- - get a `FunctionalBuilder[Write]` that need a function to create a tuple of from all attributes of a model
+ - get a `FunctionalBuilder[Write]#CanBuildN[]T1, ..., Tn` that need a function to create a tuple of from all attributes of a model
 
-If you have a case class, you already have a function that do nearly what the `FunctionalBuilder` wants: the `unapply` function ob your model's companion object return an optional tuple from an actual instance. Hence the `unlift` call to convert the function that returns an `Option[T]` to a function that return a `T`
+If you have a case class, you already have a function that do nearly what the `FunctionalBuilder#CanBuild` wants: the `unapply` function of your model's companion object return an optional tuple from an actual instance. Hence the `unlift` call to convert the function that returns an `Option[T]` to a function that return a `T`
 
 Note that calling "unlift" this function is a little bit abusive: in FP, _unlift_ convert a _function_ that returns an option of T to a _partial function_ that return T. The _lift_ is the opposite, it transforms a partial function returning a T to a plain function returning an option of T; that is a Some for the values in the partial domain of the partial function, None for others.
 

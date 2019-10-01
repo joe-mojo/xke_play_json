@@ -7,7 +7,7 @@ Sometime, you need to read a JSON entity from an HTTP request, but this JSON
 
  - may be partial
  - is untrusted
- - may be erroneous (missing attr, wrong values)
+ - may be erroneous (missing attributes, wrong values, etc.)
 
 So you want to erase some specific attributes from the input JSON
 
@@ -33,3 +33,7 @@ There is 2 ways of doing that.
  
 See 4.3.x TODOs in [Step4 source](../src/main/scala/service/Step4.scala).
 Associated test suite is [Step4Spec](../src/test/scala/service/Step4Spec.scala).
+
+## Next
+
+Checkout Step5 and go to [Step5: JSON transformers](./Step5.md)
