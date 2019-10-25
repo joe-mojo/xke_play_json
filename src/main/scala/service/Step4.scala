@@ -42,7 +42,7 @@ object Step4 {
 	// this method must use readsOnlyAdditionalInfo in order to ensure only additionalInfos are used from input JSON.
 	def createdUpdate(movieId: String, movieEntity: JsValue): Either[String, MovieUpdated] = {
 		db.get(movieId).map { movie =>
-			movieEntity.validate[Movie](readsOnlyAdditionalInfo(movie)).fold[Either[String, MovieUpdated]](toString, toMovieUpdated)
+			???
 		}.getOrElse(Left(s"Movie #$movieId not found"))
 	}
 
