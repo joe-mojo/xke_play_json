@@ -48,8 +48,7 @@ class Step4Spec extends WordSpec with Matchers with Inside {
 					case Right(simpleJson) =>
 						simpleJson shouldBe Json.obj(
 							"name" -> JsString("Snatch"),
-							"author" -> JsString("Guy Ritchie"),
-							"types" -> JsArray(Seq(JsString("comedy"), JsString("crime")))
+							"author" -> JsString("Guy Ritchie")
 						)
 				}
 
@@ -57,12 +56,29 @@ class Step4Spec extends WordSpec with Matchers with Inside {
 					case Right(simpleJson) =>
 						simpleJson shouldBe Json.obj(
 							"name" -> JsString("Spaceballs"),
-							"author" -> JsString("Mel Brooks"),
-							"types" -> JsArray(Seq(JsString("comedy"), JsString("sci-fi")))
+							"author" -> JsString("Mel Brooks")
 						)
 				}
 			}
+			"called with writesSimpleJsObj" in {
+				implicit val movieWrites: Writes[Movie] = Step4.writesSimpleJsObj
 
+				inside(Step4.getMovieLightView("tt0208092")) {
+					case Right(simpleJson) =>
+						simpleJson shouldBe Json.obj(
+							"name" -> JsString("Snatch"),
+							"author" -> JsString("Guy Ritchie")
+						)
+				}
+
+				inside(Step4.getMovieLightView("tt0094012")) {
+					case Right(simpleJson) =>
+						simpleJson shouldBe Json.obj(
+							"name" -> JsString("Spaceballs"),
+							"author" -> JsString("Mel Brooks")
+						)
+				}
+			}
 		}
 	}
 }
