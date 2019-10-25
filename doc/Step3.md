@@ -48,17 +48,17 @@ Note that calling "unlift" this function is a little bit abusive: in FP, _unlift
 Complete TODOs 3.x in the followings:
 
  - [`models.Invoice`](../src/main/scala/models/Invoice.scala) 
- - [`models.Film`](../src/main/scala/models/Film.scala)
- - [`models.FilmType`](../src/main/scala/models/FilmType.scala)
- - [`models.FilmEvent`](../src/main/scala/models/FilmEvent.scala)
+ - [`models.Movie`](../src/main/scala/models/Movie.scala)
+ - [`models.MovieType`](../src/main/scala/models/MovieType.scala)
+ - [`models.MovieEvent`](../src/main/scala/models/MovieEvent.scala)
  - [`models.Customer`](../src/main/scala/models/Customer.scala)
 
 The tests about Writes should pass in the following test suites:
 
  - [`Step3_WritesSpec`](../src/test/scala/service/Step3_WritesScpec.scala)
  - [`InvoiceSpec`](../src/test/scala/models/InvoiceSpec.scala)
- - [`FilmSpec`](../src/test/scala/models/FilmSpec.scala)
- - [`FilmEventSpec`](../src/test/scala/models/FilmEventSpec.scala)
+ - [`MovieSpec`](../src/test/scala/models/MovieSpec.scala)
+ - [`MovieEventSpec`](../src/test/scala/models/MovieEventSpec.scala)
  - [`CustomerSpec`](../src/test/scala/models/CustomerSpec.scala)
 
 ## Next

@@ -45,5 +45,5 @@ class Step3_WritesSpec extends WordSpec with Matchers {
 		}
 	}
 
-	//Looking for tests about Film ? See models.FilmSpec
+	//Looking for tests about Movie ? See models.MovieSpec
 }

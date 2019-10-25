@@ -38,14 +38,14 @@ object Step1_CreatingJsons {
 	}
 
 	/*
-	  TODO 1.3 Use JsPath to check if the given Film, passed as JSON object, has a name being a string and an imdbScore being a number from 0 to 10 (inclusive bounds)
+	  TODO 1.3 Use JsPath to check if the given Movie, passed as JSON object, has a name being a string and an imdbScore being a number from 0 to 10 (inclusive bounds)
 	  Return a (Boolean, Boolean) to tell if (name, idmbScore) are corrects. Remember, imdbScore is under "additionalInfo" sub-document.
 	  hint: validate
 	 */
-	def checkThisJsonFilm(jsFilm: JsObject): (Boolean, Boolean) = {
+	def checkThisJsonMovie(jsMovie: JsObject): (Boolean, Boolean) = {
 		(
-				(jsFilm \ "name").validate[String].fold(_ => false, _ => true),
-				(jsFilm \ "additionalInfo" \ "imdbScore").validate[BigDecimal].fold(_ => false, n =>  n >= 0 && n<= 10),
+				(jsMovie \ "name").validate[String].fold(_ => false, _ => true),
+				(jsMovie \ "additionalInfo" \ "imdbScore").validate[BigDecimal].fold(_ => false, n =>  n >= 0 && n<= 10),
 		)
 	}
 
@@ -53,8 +53,8 @@ object Step1_CreatingJsons {
 	  TODO 1.4 Use JsPath to check imdbScore again, but this time we add one condition: valid "string" scores (like "5.2" with double quotes)
 	  must NOT be coerced to Number and return false
 	 */
-	def checkImdbScore(jsFilm: JsObject): Boolean = {
-		(jsFilm \ "additionalInfo" \ "imdbScore").validate[JsNumber].fold(_ => false, n => n.value >= 0 && n.value <= 10)
+	def checkImdbScore(jsMovie: JsObject): Boolean = {
+		(jsMovie \ "additionalInfo" \ "imdbScore").validate[JsNumber].fold(_ => false, n => n.value >= 0 && n.value <= 10)
 	}
 
 	//TODO 1.5 See inside JsSuccess and JSError

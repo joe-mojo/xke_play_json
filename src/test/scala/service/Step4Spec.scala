@@ -1,23 +1,23 @@
 package service
 
-import models.{Author, Film, FilmType}
+import models.{Author, Movie, MovieType}
 import org.scalatest.{Inside, Matchers, WordSpec}
 import play.api.libs.json.{JsArray, JsNumber, JsObject, JsString, JsSuccess, Json, Writes}
 
 class Step4Spec extends WordSpec with Matchers with Inside {
 	"readsOnlyAdditionalInfo" should {
-		"""allow reading a Film from an actual instance and an "additionalInfo" JSON""" in {
+		"""allow reading a Movie from an actual instance and an "additionalInfo" JSON""" in {
 			val updateJson = Json.obj("additionalInfo" -> Json.obj(
 				"imdbScore" -> JsNumber(8.2D),
 				"imdbId" -> JsString("tt0208092"),
 				"tags" -> JsArray(Seq(JsString("Comedy"), JsString("Crime")))
 			))
-			val filmIdInRequestPath = "tt0208092"
+			val movieIdInRequestPath = "tt0208092"
 
-			val filmFromDb = Step4.db(filmIdInRequestPath)
+			val movieFromDb = Step4.db(movieIdInRequestPath)
 
-			inside(updateJson.validate[Film](Step4.readsOnlyAdditionalInfo(filmFromDb))) {
-				case JsSuccess(Film(974271600000L, "Snatch", infos, Some(Author("Guy Ritchie")), Seq(FilmType.Comedy, FilmType.Crime)), _) =>
+			inside(updateJson.validate[Movie](Step4.readsOnlyAdditionalInfo(movieFromDb))) {
+				case JsSuccess(Movie(974271600000L, "Snatch", infos, Some(Author("Guy Ritchie")), Seq(MovieType.Comedy, MovieType.Crime)), _) =>
 					infos shouldBe (updateJson \ "additionalInfo").as[JsObject]
 			}
 
@@ -26,25 +26,25 @@ class Step4Spec extends WordSpec with Matchers with Inside {
 				"""request entity contains ll fields""" in {
 					val updateInfos = Json.obj("tags" -> JsArray(Seq(JsString("Comedy"), JsString("Crime"))))
 					val updateJson = Json.toJson(
-						Film(0L, "Pwnd!", updateInfos, Some(Author("Nobody lol")), Seq.empty)
+						Movie(0L, "Pwnd!", updateInfos, Some(Author("Nobody lol")), Seq.empty)
 					)
-					val filmIdInRequestPath = "tt0208092"
+					val movieIdInRequestPath = "tt0208092"
 
-					val filmFromDb = Step4.db(filmIdInRequestPath)
+					val movieFromDb = Step4.db(movieIdInRequestPath)
 
-					inside(updateJson.validate[Film](Step4.readsOnlyAdditionalInfo(filmFromDb))) {
-						case JsSuccess(Film(974271600000L, "Snatch", infos, Some(Author("Guy Ritchie")), Seq(FilmType.Comedy, FilmType.Crime)), _) =>
+					inside(updateJson.validate[Movie](Step4.readsOnlyAdditionalInfo(movieFromDb))) {
+						case JsSuccess(Movie(974271600000L, "Snatch", infos, Some(Author("Guy Ritchie")), Seq(MovieType.Comedy, MovieType.Crime)), _) =>
 							infos shouldBe updateInfos
 					}
 			}
 		}
 	}
-	"getFilmLightView" should {
+	"getMovieLightView" should {
 		"""return a JSON obj with only name and author""" when {
 			"called with writesWithIgnore" in {
-				implicit val filmWrites: Writes[Film] = Step4.writesWithIgnore
+				implicit val movieWrites: Writes[Movie] = Step4.writesWithIgnore
 
-				inside(Step4.getFilmLightView("tt0208092")) {
+				inside(Step4.getMovieLightView("tt0208092")) {
 					case Right(simpleJson) =>
 						simpleJson shouldBe Json.obj(
 							"name" -> JsString("Snatch"),
@@ -53,7 +53,7 @@ class Step4Spec extends WordSpec with Matchers with Inside {
 						)
 				}
 
-				inside(Step4.getFilmLightView("tt0094012")) {
+				inside(Step4.getMovieLightView("tt0094012")) {
 					case Right(simpleJson) =>
 						simpleJson shouldBe Json.obj(
 							"name" -> JsString("Spaceballs"),

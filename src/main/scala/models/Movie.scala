@@ -3,41 +3,41 @@ package models
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class Film(
+case class Movie(
 		timestamp: Long,
 		name: String,
 		additionalInfo: JsValue,
 		author: Option[Author],
-		types: Seq[FilmType]
+		types: Seq[MovieType]
 )
 
-object Film {
+object Movie {
 	/*
-	TODO 2.5 Create a custom Reads for Film. In expected JSON, the timestamp attribute is named "startTimestamp"
+	TODO 2.5 Create a custom Reads for Movie. In expected JSON, the timestamp attribute is named "startTimestamp"
 	Examples:
 	{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : {"whatever": "you want"}, "author": "Guy Richie"}
 	{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}
 	*/
-	implicit val reads: Reads[Film] = {
+	implicit val reads: Reads[Movie] = {
 		(
 			(__ \ "startTimestamp").read[Long] and
 			(__ \ "name").read[String] and
 			(__ \ "additionalInfo").read[JsValue] and
 			(__ \ "author").readNullable[Author] and
-			(__ \ "types").readWithDefault[Seq[FilmType]](Seq.empty)
-		) (Film.apply _)
+			(__ \ "types").readWithDefault[Seq[MovieType]](Seq.empty)
+		) (Movie.apply _)
 	}
 	/*
-	TODO 3.5 Create a custom Writes for Film. In expected JSON, the timestamp attribute is named "startTimestamp"
+	TODO 3.5 Create a custom Writes for Movie. In expected JSON, the timestamp attribute is named "startTimestamp"
 	 */
-	implicit val writes: Writes[Film] = {
+	implicit val writes: Writes[Movie] = {
 		(
 			(__ \ "startTimestamp").write[Long] and
 			(__ \ "name").write[String] and
 			(__ \ "additionalInfo").write[JsValue] and
 			(__ \ "author").writeNullable[Author] and
-			(__ \ "types").write[Seq[FilmType]]
-		) (unlift(Film.unapply))
+			(__ \ "types").write[Seq[MovieType]]
+		) (unlift(Movie.unapply))
 	}
 }
 

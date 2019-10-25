@@ -8,7 +8,7 @@ import service.Step1_CreatingJsons._
 class Step1_CreatingJsonsSpec extends WordSpec with Matchers {
 
 	"parseSnatch" should {
-		"parse a string with Film JSON" in {
+		"parse a string with Movie JSON" in {
 			parseSnatch should be {
 				Json.obj(
 					"timestamp" -> JsNumber(BigDecimal(974271600000L)),
@@ -29,23 +29,23 @@ class Step1_CreatingJsonsSpec extends WordSpec with Matchers {
 		}
 	}
 
-	"checkThisJsonFilm" when {
+	"checkThisJsonMovie" when {
 		"passed a valid Json" should {
 			"return (true, true)" in {
-				checkThisJsonFilm(Json.parse("""{"name" : "Snatch", "additionalInfo": {"imdbScore": 8.3}}""").as[JsObject]) should be(true -> true)
-				checkThisJsonFilm(Json.parse("""{"name" : "A", "additionalInfo": {"imdbScore": 10}}""").as[JsObject]) should be(true -> true)
-				checkThisJsonFilm(Json.parse("""{"name" : "A", "additionalInfo": {"imdbScore": "10"}}""").as[JsObject]) should be(true -> true)
-				checkThisJsonFilm(Json.parse("""{"name" : "1", "additionalInfo": {"imdbScore": 0}}""").as[JsObject]) should be(true -> true)
+				checkThisJsonMovie(Json.parse("""{"name" : "Snatch", "additionalInfo": {"imdbScore": 8.3}}""").as[JsObject]) should be(true -> true)
+				checkThisJsonMovie(Json.parse("""{"name" : "A", "additionalInfo": {"imdbScore": 10}}""").as[JsObject]) should be(true -> true)
+				checkThisJsonMovie(Json.parse("""{"name" : "A", "additionalInfo": {"imdbScore": "10"}}""").as[JsObject]) should be(true -> true)
+				checkThisJsonMovie(Json.parse("""{"name" : "1", "additionalInfo": {"imdbScore": 0}}""").as[JsObject]) should be(true -> true)
 			}
 		}
 		"passed a Json with invalid name but invalid imdbScore" should {
 			"return (false, false)" in {
-				checkThisJsonFilm(Json.parse("""{"name" : 12, "additionalInfo": {"imdbScore": 11}}""").as[JsObject]) should be(false -> false)
-				checkThisJsonFilm(Json.parse("""{"name" : ["A"], "additionalInfo": {"imdbScore": "_10"}}""").as[JsObject]) should be(false -> false)
-				checkThisJsonFilm(Json.parse("""{"name" : {"name": "Toto"}, "additionalInfo": {"imdbScore": -0.05}}""").as[JsObject]) should be(false -> false)
-				checkThisJsonFilm(Json.parse("""{"name" : null, "additionalInfo": {"score": 0}}""").as[JsObject]) should be(false -> false)
-				checkThisJsonFilm(Json.parse("""{"additionalInfo": {"imdbScore": [5]}}""").as[JsObject]) should be(false -> false)
-				checkThisJsonFilm(Json.parse("""{"imdbScore": 5}""").as[JsObject]) should be(false -> false)
+				checkThisJsonMovie(Json.parse("""{"name" : 12, "additionalInfo": {"imdbScore": 11}}""").as[JsObject]) should be(false -> false)
+				checkThisJsonMovie(Json.parse("""{"name" : ["A"], "additionalInfo": {"imdbScore": "_10"}}""").as[JsObject]) should be(false -> false)
+				checkThisJsonMovie(Json.parse("""{"name" : {"name": "Toto"}, "additionalInfo": {"imdbScore": -0.05}}""").as[JsObject]) should be(false -> false)
+				checkThisJsonMovie(Json.parse("""{"name" : null, "additionalInfo": {"score": 0}}""").as[JsObject]) should be(false -> false)
+				checkThisJsonMovie(Json.parse("""{"additionalInfo": {"imdbScore": [5]}}""").as[JsObject]) should be(false -> false)
+				checkThisJsonMovie(Json.parse("""{"imdbScore": 5}""").as[JsObject]) should be(false -> false)
 			}
 		}
 	}

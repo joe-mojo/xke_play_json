@@ -114,7 +114,7 @@ class Step5Spec extends WordSpec with Matchers with Inside with TryValues {
 		}
 	}
 
-	"PickMetasArrayFromFilm" when {
+	"PickMetasArrayFromMovie" when {
 		""""additionalInfo\metas" path exists""" should {
 			"""read "metas" in "additionalInfo" as JsArray of strings""" in {
 				checkValue(Step5.pickMetasArray(spaceballsJson), metasPath, JsArray(Seq(JsString("fun"), JsString("parody"))))
@@ -132,7 +132,7 @@ class Step5Spec extends WordSpec with Matchers with Inside with TryValues {
 		}
 	}
 
-	"PickBranchFromFilm" when {
+	"PickBranchFromMovie" when {
 		""""additionalInfo\metas" path exists""" should {
 			"return a JsObject with the selected branch only" in {
 				inside(Step5.pickMetasBranch(spaceballsJson)) {
@@ -164,7 +164,7 @@ class Step5Spec extends WordSpec with Matchers with Inside with TryValues {
 		}
 	}
 
-	"createPushNewMetaInFilm" when {
+	"createPushNewMetaInMovie" when {
 		""""additionalInfo\metas" path exists""" should {
 			"read the JsObject and push a new meta" in {
 				spaceballsJson shouldBe a[JsObject]
@@ -174,7 +174,7 @@ class Step5Spec extends WordSpec with Matchers with Inside with TryValues {
 		}
 	}
 
-	"PruneNotesFromFilm" when {
+	"PruneNotesFromMovie" when {
 		""""additionalInfo\notes" path exists""" should {
 			"read the JsObject and remove notes" in {
 				spaceballsJson shouldBe a[JsObject]
@@ -184,7 +184,7 @@ class Step5Spec extends WordSpec with Matchers with Inside with TryValues {
 		}
 	}
 
-	"createPushNewMetaInFilm followed by PruneNotesFromFilm" when {
+	"createPushNewMetaInMovie followed by PruneNotesFromMovie" when {
 		""""additionalInfo\metas" and "additionalInfo\notes" paths exist""" should {
 			"push a new meta and remove notes" in {
 				spaceballsJson shouldBe a[JsObject]

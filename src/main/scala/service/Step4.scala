@@ -1,84 +1,84 @@
 package service
 
-import models.{Author, Film, FilmType, FilmUpdated}
+import models.{Author, Movie, MovieType, MovieUpdated}
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
 import scala.collection.mutable
 
 object Step4 {
-	val db: mutable.Map[String, Film] = mutable.Map(
-		"tt0208092" -> Film(
+	val db: mutable.Map[String, Movie] = mutable.Map(
+		"tt0208092" -> Movie(
 			974271600000L,
 			"Snatch",
 			Json.obj("imdbScore" -> JsNumber(8.3D), "imdbId" -> "tt0208092"),
 			Some(Author("Guy Ritchie")),
-			Seq(FilmType.Comedy, FilmType.Crime)
+			Seq(MovieType.Comedy, MovieType.Crime)
 		),
-		"tt0094012" -> Film(
+		"tt0094012" -> Movie(
 			1400000000L,
 			"Spaceballs",
 			Json.obj("imdbScore" -> JsNumber(7.1D), "imdbId" -> "tt0094012"),
 			Some(Author("Mel Brooks")),
-			Seq(FilmType.Comedy, FilmType.SciFi)
+			Seq(MovieType.Comedy, MovieType.SciFi)
 		)
 	)
-	//TODO 4.1 implement readsOnlyAdditionalInfo that take a Film and return a Reads[Film] that actually reads only additionalInfo from input JSON,
-	//  and replace all other attributes by the specified film attributes
-	def readsOnlyAdditionalInfo(filmFromDb: Film): Reads[Film] = {
+	//TODO 4.1 implement readsOnlyAdditionalInfo that take a Movie and return a Reads[Movie] that actually reads only additionalInfo from input JSON,
+	//  and replace all other attributes by the specified movie attributes
+	def readsOnlyAdditionalInfo(movieFromDb: Movie): Reads[Movie] = {
 		(
-				Reads.pure[Long](filmFromDb.timestamp) and
-				Reads.pure[String](filmFromDb.name) and
+				Reads.pure[Long](movieFromDb.timestamp) and
+				Reads.pure[String](movieFromDb.name) and
 				(__ \ "additionalInfo").read[JsObject] and
-				Reads.pure(filmFromDb.author) and
-				Reads.pure(filmFromDb.types)
-		)(Film.apply _)
+				Reads.pure(movieFromDb.author) and
+				Reads.pure(movieFromDb.types)
+		)(Movie.apply _)
 	}
 
-	private def toString(errors: Seq[(JsPath, Seq[JsonValidationError])]): Either[String, FilmUpdated] = Left(errors.toString())
-	private def toFilmUpdated(valid: Film): Either[String, FilmUpdated] = Right(FilmUpdated(valid))
+	private def toString(errors: Seq[(JsPath, Seq[JsonValidationError])]): Either[String, MovieUpdated] = Left(errors.toString())
+	private def toMovieUpdated(valid: Movie): Either[String, MovieUpdated] = Right(MovieUpdated(valid))
 
-	//TODO 4.2 implement createdUpdate that take a film Id and a JSON entity representing a Film with updated values and return the corresponding FilmUpdated event.
+	//TODO 4.2 implement createdUpdate that take a movie Id and a JSON entity representing a Movie with updated values and return the corresponding MovieUpdated event.
 	// this method must use readsOnlyAdditionalInfo in order to ensure only additionalInfos are used from input JSON.
-	def createdUpdate(filmId: String, filmEntity: JsValue): Either[String, FilmUpdated] = {
-		db.get(filmId).map { film =>
-			filmEntity.validate[Film](readsOnlyAdditionalInfo(film)).fold[Either[String, FilmUpdated]](toString, toFilmUpdated)
-		}.getOrElse(Left(s"Film #$filmId not found"))
+	def createdUpdate(movieId: String, movieEntity: JsValue): Either[String, MovieUpdated] = {
+		db.get(movieId).map { movie =>
+			movieEntity.validate[Movie](readsOnlyAdditionalInfo(movie)).fold[Either[String, MovieUpdated]](toString, toMovieUpdated)
+		}.getOrElse(Left(s"Movie #$movieId not found"))
 	}
 
-	def updateInfos(filmId: String, filmEntity: JsValue): Either[String, FilmUpdated] = {
-		createdUpdate(filmId, filmEntity).map { evt =>
-			db.put(filmId, evt.data)
+	def updateInfos(movieId: String, movieEntity: JsValue): Either[String, MovieUpdated] = {
+		createdUpdate(movieId, movieEntity).map { evt =>
+			db.put(movieId, evt.data)
 			evt
 		}
 	}
 
 	//TODO 4.3 Create writes that hide an attribute. We're going to study 2 ways.
-	// We want a light view of Film JSON (for example: returned in an http request) with only film, name and author.
-	//TODO 4.3.1 Create a Writes[Film] that create a JSON object with only needed attributes.
-	def writesSimpleJsObj: Writes[Film] = Writes { film =>
-		film.author.foldLeft(Json.obj("name" -> film.name)) { (jsObj, author) =>
+	// We want a light view of Movie JSON (for example: returned in an http request) with only movie, name and author.
+	//TODO 4.3.1 Create a Writes[Movie] that create a JSON object with only needed attributes.
+	def writesSimpleJsObj: Writes[Movie] = Writes { movie =>
+		movie.author.foldLeft(Json.obj("name" -> movie.name)) { (jsObj, author) =>
 		jsObj + ("author", JsString(author.name))
 		}
 	}
-	//TODO 4.3.2 Create a Writes[Film] using explicit pathes (__ \ "attr").writes... and Film.unapply
-	// BUT You need one more thing because Film.unapply is giving all attributes in a tuple and
+	//TODO 4.3.2 Create a Writes[Movie] using explicit pathes (__ \ "attr").writes... and Movie.unapply
+	// BUT You need one more thing because Movie.unapply is giving all attributes in a tuple and
 	// we want only 2 of them.
 	def ignore[T]: OWrites[T] = OWrites[T](_ => Json.obj())
-	def writesWithIgnore: Writes[Film] = {
+	def writesWithIgnore: Writes[Movie] = {
 		(
 				ignore and
 				(__ \ "name").write[String] and
 				ignore and
 				(__ \ "author").writeNullable[Author] and
-				(__ \ "types").write[Seq[FilmType]]
-		)(unlift(Film.unapply))
+				(__ \ "types").write[Seq[MovieType]]
+		)(unlift(Movie.unapply))
 	}
 
-	def getFilmLightView(filmId: String)(implicit writesFilm: Writes[Film]): Either[String, JsValue] = {
-		db.get(filmId).map { film =>
-			Json.toJson(film)
-		}.fold[Either[String, JsValue]](Left(s"Not found: film #$filmId")){ json: JsValue =>
+	def getMovieLightView(movieId: String)(implicit writesMovie: Writes[Movie]): Either[String, JsValue] = {
+		db.get(movieId).map { movie =>
+			Json.toJson(movie)
+		}.fold[Either[String, JsValue]](Left(s"Not found: movie #$movieId")){ json: JsValue =>
 			Right(json)
 		}
 	}

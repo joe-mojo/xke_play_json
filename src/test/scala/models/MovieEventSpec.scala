@@ -3,12 +3,12 @@ package models
 import org.scalatest.{FunSpec, Inside, Matchers}
 import play.api.libs.json._
 
-class FilmEventSpec extends FunSpec with Matchers with Inside{
-  private final val validJsonOfFilmCreated =
+class MovieEventSpec extends FunSpec with Matchers with Inside{
+  private final val validJsonOfMovieCreated =
     """
       | {
       |   "eventType": "created",
-      |   "dataType": "film",
+      |   "dataType": "movie",
       |   "data": {
       |     "startTimestamp": 1400000000,
       |     "name": "Spaceballs",
@@ -21,11 +21,11 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
       |   }
       | }
     """.stripMargin
-  private final val validJsonOfFilmUpdated =
+  private final val validJsonOfMovieUpdated =
           """
             | {
             |   "eventType": "updated",
-            |   "dataType": "film",
+            |   "dataType": "movie",
             |   "data": {
             |     "startTimestamp": 1400000000,
             |     "name": "Spaceballs",
@@ -38,11 +38,11 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
             |   }
             | }
           """.stripMargin
-  private final val validJsonOfFilmDeleted =
+  private final val validJsonOfMovieDeleted =
     """
       | {
       |   "eventType": "deleted",
-      |   "dataType": "film",
+      |   "dataType": "movie",
       |   "data": {
       |     "startTimestamp": 1400000000,
       |     "name": "Spaceballs",
@@ -52,7 +52,7 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
       |   }
       | }
     """.stripMargin
-  private final val invalidJsonOfFilmCreated =
+  private final val invalidJsonOfMovieCreated =
     """
       | {
       |   "eventType": "created",
@@ -69,11 +69,11 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
       |   }
       | }
     """.stripMargin
-  private final val invalidJsonOfFilmEvent =
+  private final val invalidJsonOfMovieEvent =
     """
       | {
       |   "eventType": "schtroumpfed",
-      |   "dataType": "film",
+      |   "dataType": "movie",
       |   "data": {
       |     "startTimestamp": 1400000000,
       |     "name": "Spaceballs",
@@ -89,7 +89,7 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
   private final val malformedDataJson = """
     | {
     |   "eventType": "created",
-    |   "dataType": "film",
+    |   "dataType": "movie",
     |   "data": {
     |     "startTimestamp": 1400000000,
     |     "name": "Spaceballs",
@@ -99,57 +99,57 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
     | }
   """.stripMargin
 
-  val spaceballTypes = Seq(FilmType.Comedy, FilmType.SciFi)
+  val spaceballTypes = Seq(MovieType.Comedy, MovieType.SciFi)
 
-  describe("A FilmCreated event") {
-    it("""should parse a JSON film event with "created" type and "film" data type""") {
-      inside(Json.parse(validJsonOfFilmCreated).validate[FilmCreated])  {
-        case JsSuccess(filmEvt, path) =>
-          filmEvt should be(FilmCreated(Film(1400000000L, "Spaceballs", Json.obj(
+  describe("A MovieCreated event") {
+    it("""should parse a JSON movie event with "created" type and "movie" data type""") {
+      inside(Json.parse(validJsonOfMovieCreated).validate[MovieCreated])  {
+        case JsSuccess(movieEvt, path) =>
+          movieEvt should be(MovieCreated(Movie(1400000000L, "Spaceballs", Json.obj(
             "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
             "notes" -> "Mel Brooks and Rick Moranis in a delirium"
           ), Some(Author("Mel Brooks")), spaceballTypes)))
       }
     }
 
-    it("""should render a FilmCreated as a valid JSON""") {
-      Json.toJson(FilmCreated(Film(1400000000L, "Spaceballs", Json.obj(
+    it("""should render a MovieCreated as a valid JSON""") {
+      Json.toJson(MovieCreated(Movie(1400000000L, "Spaceballs", Json.obj(
         "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
         "notes" -> "Mel Brooks and Rick Moranis in a delirium"
-      ), Some(Author("Mel Brooks")), spaceballTypes)))(FilmCreated.writes) shouldBe Json.parse(validJsonOfFilmCreated)
+      ), Some(Author("Mel Brooks")), spaceballTypes)))(MovieCreated.writes) shouldBe Json.parse(validJsonOfMovieCreated)
     }
 
-    it("""should render a FilmUpdated as a valid JSON""") {
-      Json.toJson(FilmUpdated(Film(1400000000L, "Spaceballs", Json.obj(
+    it("""should render a MovieUpdated as a valid JSON""") {
+      Json.toJson(MovieUpdated(Movie(1400000000L, "Spaceballs", Json.obj(
         "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
         "notes" -> "Mel Brooks and Rick Moranis in a delirium"
-      ), Some(Author("Mel Brooks")), spaceballTypes)))(FilmUpdated.writes) shouldBe Json.parse(validJsonOfFilmUpdated)
+      ), Some(Author("Mel Brooks")), spaceballTypes)))(MovieUpdated.writes) shouldBe Json.parse(validJsonOfMovieUpdated)
     }
 
-    it("""should render a FilmDeleted as a valid JSON""") {
+    it("""should render a MovieDeleted as a valid JSON""") {
       Json.toJson(
-        FilmDeleted(Film(1400000000L, "Spaceballs", JsNull, Some(Author("Mel Brooks")), spaceballTypes))
-      )(FilmDeleted.writes) shouldBe Json.parse(validJsonOfFilmDeleted)
+        MovieDeleted(Movie(1400000000L, "Spaceballs", JsNull, Some(Author("Mel Brooks")), spaceballTypes))
+      )(MovieDeleted.writes) shouldBe Json.parse(validJsonOfMovieDeleted)
     }
 
-    it("""should not parse a JSON film event with a type other than "created"""") {
-      Json.parse(validJsonOfFilmUpdated).validate[FilmCreated] should matchPattern {
+    it("""should not parse a JSON movie event with a type other than "created"""") {
+      Json.parse(validJsonOfMovieUpdated).validate[MovieCreated] should matchPattern {
         case JsError(errors) =>
       }
     }
 
-    it("""should not parse a JSON film event with "created" type but wrong dataType""") {
-      Json.parse(invalidJsonOfFilmCreated).validate[FilmCreated] should matchPattern {
+    it("""should not parse a JSON movie event with "created" type but wrong dataType""") {
+      Json.parse(invalidJsonOfMovieCreated).validate[MovieCreated] should matchPattern {
         case JsError(errors) =>
       }
     }
   }
 
-  describe("A FilmEvent") {
-    describe("using only FilmEvent trait") {
-      it("""should parse a "created" JSON film event""") {
-        inside(Json.parse(validJsonOfFilmCreated).validate[FilmEvent]) {
-          case JsSuccess(FilmCreated(Film(1400000000L, "Spaceballs", infos: JsObject, Some(Author("Mel Brooks")), `spaceballTypes`)), _) =>
+  describe("A MovieEvent") {
+    describe("using only MovieEvent trait") {
+      it("""should parse a "created" JSON movie event""") {
+        inside(Json.parse(validJsonOfMovieCreated).validate[MovieEvent]) {
+          case JsSuccess(MovieCreated(Movie(1400000000L, "Spaceballs", infos: JsObject, Some(Author("Mel Brooks")), `spaceballTypes`)), _) =>
             inside((infos \ "metas").validate[Array[String]]) {
               case JsSuccess(Array("fun", "parody"), _) =>
             }
@@ -157,16 +157,16 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
             infos.keys should contain theSameElementsAs Seq("metas", "notes")
         }
       }
-      it("""should render a "created" JSON film event""") {
-        Json.toJson(FilmCreated(Film(1400000000L, "Spaceballs", Json.obj(
+      it("""should render a "created" JSON movie event""") {
+        Json.toJson(MovieCreated(Movie(1400000000L, "Spaceballs", Json.obj(
           "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
           "notes" -> "Mel Brooks and Rick Moranis in a delirium"
-        ), Some(Author("Mel Brooks")), spaceballTypes)))(FilmEvent.writes) shouldBe Json.parse(validJsonOfFilmCreated)
+        ), Some(Author("Mel Brooks")), spaceballTypes)))(MovieEvent.writes) shouldBe Json.parse(validJsonOfMovieCreated)
       }
 
-      it("""should parse an "updated" JSON film event""") {
-        inside(Json.parse(validJsonOfFilmUpdated).validate[FilmEvent]) {
-          case JsSuccess(FilmUpdated(Film(1400000000L, "Spaceballs", infos: JsObject, Some(Author("Mel Brooks")), `spaceballTypes`)), _) =>
+      it("""should parse an "updated" JSON movie event""") {
+        inside(Json.parse(validJsonOfMovieUpdated).validate[MovieEvent]) {
+          case JsSuccess(MovieUpdated(Movie(1400000000L, "Spaceballs", infos: JsObject, Some(Author("Mel Brooks")), `spaceballTypes`)), _) =>
             inside((infos \ "metas").validate[Array[String]]) {
               case JsSuccess(Array("fun", "parody"), _) =>
             }
@@ -174,32 +174,32 @@ class FilmEventSpec extends FunSpec with Matchers with Inside{
             infos.keys should contain theSameElementsAs Seq("metas", "notes")
         }
       }
-      it("""should render an "updated" JSON film event""") {
-        Json.toJson(FilmUpdated(Film(1400000000L, "Spaceballs", Json.obj(
+      it("""should render an "updated" JSON movie event""") {
+        Json.toJson(MovieUpdated(Movie(1400000000L, "Spaceballs", Json.obj(
           "metas" -> JsArray(Seq(JsString("fun"), JsString("parody"))),
           "notes" -> "Mel Brooks and Rick Moranis in a delirium"
-        ), Some(Author("Mel Brooks")), spaceballTypes)))(FilmEvent.writes) shouldBe Json.parse(validJsonOfFilmUpdated)
+        ), Some(Author("Mel Brooks")), spaceballTypes)))(MovieEvent.writes) shouldBe Json.parse(validJsonOfMovieUpdated)
       }
 
-      it("""should parse a "deleted" JSON film event""") {
-        Json.parse(validJsonOfFilmDeleted).validate[FilmEvent] should matchPattern {
-          case JsSuccess(FilmDeleted(Film(1400000000L, "Spaceballs", JsNull, Some(Author("Mel Brooks")), `spaceballTypes`)), _) =>
+      it("""should parse a "deleted" JSON movie event""") {
+        Json.parse(validJsonOfMovieDeleted).validate[MovieEvent] should matchPattern {
+          case JsSuccess(MovieDeleted(Movie(1400000000L, "Spaceballs", JsNull, Some(Author("Mel Brooks")), `spaceballTypes`)), _) =>
         }
       }
-      it("""should render a "deleted" JSON film event""") {
+      it("""should render a "deleted" JSON movie event""") {
         Json.toJson(
-          FilmDeleted(Film(1400000000L, "Spaceballs", JsNull, Some(Author("Mel Brooks")), spaceballTypes))
-        )(FilmEvent.writes) shouldBe Json.parse(validJsonOfFilmDeleted)
+          MovieDeleted(Movie(1400000000L, "Spaceballs", JsNull, Some(Author("Mel Brooks")), spaceballTypes))
+        )(MovieEvent.writes) shouldBe Json.parse(validJsonOfMovieDeleted)
       }
 
       it("""should not parse an unknown event type""") {
-        Json.parse(invalidJsonOfFilmEvent).validate[FilmEvent] should matchPattern {
+        Json.parse(invalidJsonOfMovieEvent).validate[MovieEvent] should matchPattern {
           case JsError(error :: otherErrors) =>
         }
       }
 
       it("""should not parse an event with malformed data""") {
-        Json.parse(malformedDataJson).validate[FilmEvent] should matchPattern {
+        Json.parse(malformedDataJson).validate[MovieEvent] should matchPattern {
           case JsError(error :: otherErrors) =>
         }
       }

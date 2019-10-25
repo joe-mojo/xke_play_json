@@ -84,17 +84,17 @@ See [validation with Reads](https://www.playframework.com/documentation/2.7.x/Sc
 Complete TODOs 2.x in the followings:
 
  - [`models.Invoice`](../src/main/scala/models/Invoice.scala) 
- - [`models.Film`](../src/main/scala/models/Film.scala)
- - [`models.FilmType`](../src/main/scala/models/FilmType.scala)
- - [`models.FilmEvent`](../src/main/scala/models/FilmEvent.scala)
+ - [`models.Movie`](../src/main/scala/models/Movie.scala)
+ - [`models.MovieType`](../src/main/scala/models/MovieType.scala)
+ - [`models.MovieEvent`](../src/main/scala/models/MovieEvent.scala)
  - [`models.Customer`](../src/main/scala/models/Customer.scala)
  
 Tests about Reads must pass in the following test suites:
 
  - [`Step2_ReadsSpec`](../src/test/scala/service/Step2_ReadsSpec.scala)
  - [`InvoiceSpec`](../src/test/scala/models/InvoiceSpec.scala)
- - [`FilmSpec`](../src/test/scala/models/FilmSpec.scala)
- - [`FilmEventSpec`](../src/test/scala/models/FilmEventSpec.scala)
+ - [`MovieSpec`](../src/test/scala/models/MovieSpec.scala)
+ - [`MovieEventSpec`](../src/test/scala/models/MovieEventSpec.scala)
  - [`CustomerSpec`](../src/test/scala/models/CustomerSpec.scala)
 
 

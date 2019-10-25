@@ -1,7 +1,7 @@
 package service
 
-import models.FilmType.{Comedy, Romance, Horror}
-import models.{Address, AddressNumber, Author, Discount, Film, FilmType, InvoiceLine, PostalCode, Street}
+import models.MovieType.{Comedy, Romance, Horror}
+import models.{Address, AddressNumber, Author, Discount, Movie, MovieType, InvoiceLine, PostalCode, Street}
 import org.scalatest.{Inside, Matchers, WordSpec}
 import play.api.libs.json._
 
@@ -94,21 +94,21 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 		}
 	}
 
-	"A Reads[Film]" when {
-		import models.Film.reads
+	"A Reads[Movie]" when {
+		import models.Movie.reads
 		"parsing a valid JSON without author" should {
-			"validate it as Film" in {
-				Json.parse("""{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}""").validate[Film] should matchPattern {
-					case JsSuccess(Film(974271600000L, "Snatch", JsString("Whatever you want"), None, Seq()), _) =>
+			"validate it as Movie" in {
+				Json.parse("""{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}""").validate[Movie] should matchPattern {
+					case JsSuccess(Movie(974271600000L, "Snatch", JsString("Whatever you want"), None, Seq()), _) =>
 				}
 			}
 		}
 		"parsing a valid JSON with author" should {
-			"validate it as Film" in {
+			"validate it as Movie" in {
 				inside(Json.parse(
 					"""{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : {"whatever": "you want"}, "author": "Guy Richie"}"""
-				).validate[Film]){
-					case JsSuccess(Film(974271600000L, "Snatch", additionalInfo, Some(Author("Guy Richie")), Seq()), _) =>
+				).validate[Movie]){
+					case JsSuccess(Movie(974271600000L, "Snatch", additionalInfo, Some(Author("Guy Richie")), Seq()), _) =>
 						additionalInfo shouldBe Json.obj("whatever" -> JsString("you want"))
 				}
 
@@ -116,16 +116,16 @@ class Step2_ReadsSpec extends WordSpec with Matchers with Inside{
 		}
 	}
 
-	"A Reads[FilmType]" when {
+	"A Reads[MovieType]" when {
 		"parsing a valid JSON" should {
-			"validate it as FilmType" in {
-				Json.parse(""""horror"""").validate[FilmType] should matchPattern {
+			"validate it as MovieType" in {
+				Json.parse(""""horror"""").validate[MovieType] should matchPattern {
 					case JsSuccess(Horror, _) =>
 				}
-				Json.parse(""""romance"""").validate[FilmType] should matchPattern {
+				Json.parse(""""romance"""").validate[MovieType] should matchPattern {
 					case JsSuccess(Romance, _) =>
 				}
-				Json.parse(""""comedy"""").validate[FilmType] should matchPattern {
+				Json.parse(""""comedy"""").validate[MovieType] should matchPattern {
 					case JsSuccess(Comedy, _) =>
 				}
 
