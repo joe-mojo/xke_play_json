@@ -139,7 +139,7 @@ object MovieEvent {
 				case "created" => jsObj.validate[MovieCreated]
 				case "updated" => jsObj.validate[MovieUpdated]
 				case "deleted" => jsObj.validate[MovieDeleted]
-				case other => JsError(s"Unknon MovieEvent type: $other")
+				case other => JsError(s"Unknown MovieEvent type: $other")
 			}
 		case other =>
 			JsError(s"Cannot parse as MovieEvent something that is not an object: $other")
