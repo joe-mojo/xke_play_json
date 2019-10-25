@@ -54,7 +54,7 @@ object Step5 {
 	//TODO 5.6 create a function that composes createPushNewMetaInMovie and PruneNotesFromMovie
 	// to read the JSON of a Movie and update it with a new meta and no more notes
 	def pushNewMetaAndPruneNotes(jsObj: JsObject, newMeta: String): JsResult[JsObject] = {
-		(createPushNewMetaInMovie(newMeta) andThen PruneNotesFromMovie).reads(jsObj)
+		???
 	}
 
 }
