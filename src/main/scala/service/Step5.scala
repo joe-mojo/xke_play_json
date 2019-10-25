@@ -24,7 +24,7 @@ object Step5 {
 	val PickMetasArrayFromMovie: Reads[JsArray] = (__ \ "additionalInfo" \ "metas").json.pick[JsArray]
 
 	//TODO 5.3.1 create a reads that extract the additionalInfo.metas branch in the JSON of a movie
-	val PickBranchFromMovie: Reads[JsObject] = (__ \ "additionalInfo" \ "metas").json.pickBranch
+	val PickBranchFromMovie: Reads[JsObject] = null
 
 	//TODO 5.4.1 create a reads that push a new value in the additionalInfo.metas array
 	val createPushNewMetaInMovie: String  => Reads[JsObject] = { newMeta =>
@@ -43,7 +43,7 @@ object Step5 {
 	def pickMetasArray(jsval: JsValue): JsResult[JsArray] = PickMetasArrayFromMovie.reads(jsval)
 
 	//TODO 5.3.2 create a function that uses PickBranchFromMovie to return a JSON of Movie that contains only the additionalInfo.metas branch
-	def pickMetasBranch(jsval: JsValue): JsResult[JsObject] = PickBranchFromMovie.reads(jsval)
+	def pickMetasBranch(jsval: JsValue): JsResult[JsObject] = ???
 
 	//TODO 5.4.2 create a function that uses createPushNewMetaInMovie to instanciate a reads and return the JSON of a Movie with the specified meta added
 	def pushNewMeta(jsObj: JsObject, newMeta: String): JsResult[JsObject] = ???
