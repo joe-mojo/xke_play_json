@@ -66,13 +66,13 @@ object Step4 {
 	// we want only 2 of them.
 	def ignore[T]: OWrites[T] = OWrites[T](_ => Json.obj())
 	def writesWithIgnore: Writes[Movie] = {
-		(
-				ignore and
-				(__ \ "name").write[String] and
-				ignore and
-				(__ \ "author").writeNullable[Author] and
-				ignore
-		)(unlift(Movie.unapply))
+		//(
+		//??? and
+		//??? and
+		//??? and
+		//??? and
+		???
+		//)(unlift(Movie.unapply))
 	}
 
 	def getMovieLightView(movieId: String)(implicit writesMovie: Writes[Movie]): Either[String, JsValue] = {
