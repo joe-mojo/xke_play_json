@@ -27,9 +27,11 @@ object Step5 {
 	val PickBranchFromMovie: Reads[JsObject] = (__ \ "additionalInfo" \ "metas").json.pickBranch
 
 	//TODO 5.4.1 create a reads that push a new value in the additionalInfo.metas array
-	val createPushNewMetaInMovie: String  => Reads[JsObject] = newMeta => (__ \ "additionalInfo" \ "metas").json.update(
-		__.read[JsArray].map(jsArray => jsArray :+ JsString(newMeta))
-	)
+	val createPushNewMetaInMovie: String  => Reads[JsObject] = { newMeta =>
+		(__ \ "additionalInfo" \ "metas").json.update(
+			__.read[JsArray].map(jsArray => jsArray :+ JsString(newMeta))
+		)
+	}
 
 	//TODO 5.5.1 create a reads that removes the additionalInfo.notes in tha JSON of a Movie
 	val PruneNotesFromMovie: Reads[JsObject] = (__ \ "additionalInfo" \ "notes").json.prune
