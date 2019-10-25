@@ -26,13 +26,13 @@ object Step4 {
 	//TODO 4.1 implement readsOnlyAdditionalInfo that take a Movie and return a Reads[Movie] that actually reads only additionalInfo from input JSON,
 	//  and replace all other attributes by the specified movie attributes
 	def readsOnlyAdditionalInfo(movieFromDb: Movie): Reads[Movie] = {
-		(
-				Reads.pure[Long](movieFromDb.timestamp) and
-				Reads.pure[String](movieFromDb.name) and
-				(__ \ "additionalInfo").read[JsObject] and
-				Reads.pure(movieFromDb.author) and
-				Reads.pure(movieFromDb.types)
-		)(Movie.apply _)
+		//(
+				//??? and
+				//??? and
+				//??? and
+				//??? and
+				???
+		//)(Movie.apply _)
 	}
 
 	private def toString(errors: Seq[(JsPath, Seq[JsonValidationError])]): Either[String, MovieUpdated] = Left(errors.toString())
