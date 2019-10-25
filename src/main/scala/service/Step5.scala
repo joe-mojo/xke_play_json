@@ -34,7 +34,7 @@ object Step5 {
 	}
 
 	//TODO 5.5.1 create a reads that removes the additionalInfo.notes in tha JSON of a Movie
-	val PruneNotesFromMovie: Reads[JsObject] = (__ \ "additionalInfo" \ "notes").json.prune
+	val PruneNotesFromMovie: Reads[JsObject] = null
 
 	//TODO 5.1.2: create a function that uses PickMetasFromMovie to return the value of additionalInfo.metas value in the JSON of a Movie
 	def pickMetas(jsval: JsValue): JsResult[JsValue] = PickMetasFromMovie.reads(jsval)
@@ -49,7 +49,7 @@ object Step5 {
 	def pushNewMeta(jsObj: JsObject, newMeta: String): JsResult[JsObject] = createPushNewMetaInMovie(newMeta).reads(jsObj)
 
 	//TODO 5.5.2 create a function that uses PruneNotesFromMovie to read the JSON of a Movie and return it without additionalInfo.notes
-	def pruneNotes(jsObj: JsObject): JsResult[JsObject] = PruneNotesFromMovie.reads(jsObj)
+	def pruneNotes(jsObj: JsObject): JsResult[JsObject] = ???
 
 	//TODO 5.6 create a function that composes createPushNewMetaInMovie and PruneNotesFromMovie
 	// to read the JSON of a Movie and update it with a new meta and no more notes
