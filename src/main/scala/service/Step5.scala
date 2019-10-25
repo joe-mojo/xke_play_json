@@ -28,9 +28,9 @@ object Step5 {
 
 	//TODO 5.4.1 create a reads that push a new value in the additionalInfo.metas array
 	val createPushNewMetaInMovie: String  => Reads[JsObject] = { newMeta =>
-		(__ \ "additionalInfo" \ "metas").json.update(
-			__.read[JsArray].map(jsArray => jsArray :+ JsString(newMeta))
-		)
+
+
+		???
 	}
 
 	//TODO 5.5.1 create a reads that removes the additionalInfo.notes in tha JSON of a Movie
@@ -46,7 +46,7 @@ object Step5 {
 	def pickMetasBranch(jsval: JsValue): JsResult[JsObject] = PickBranchFromMovie.reads(jsval)
 
 	//TODO 5.4.2 create a function that uses createPushNewMetaInMovie to instanciate a reads and return the JSON of a Movie with the specified meta added
-	def pushNewMeta(jsObj: JsObject, newMeta: String): JsResult[JsObject] = createPushNewMetaInMovie(newMeta).reads(jsObj)
+	def pushNewMeta(jsObj: JsObject, newMeta: String): JsResult[JsObject] = ???
 
 	//TODO 5.5.2 create a function that uses PruneNotesFromMovie to read the JSON of a Movie and return it without additionalInfo.notes
 	def pruneNotes(jsObj: JsObject): JsResult[JsObject] = ???
