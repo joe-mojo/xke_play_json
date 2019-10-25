@@ -97,6 +97,9 @@ Tests about Reads must pass in the following test suites:
  - [`MovieEventSpec`](../src/test/scala/models/MovieEventSpec.scala)
  - [`CustomerSpec`](../src/test/scala/models/CustomerSpec.scala)
 
+## Going further
+
+Not covered by this hands'on: [Reads with validators](https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators#Validation-with-Reads)
 
 ## Next
 

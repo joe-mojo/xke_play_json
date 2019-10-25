@@ -37,8 +37,3 @@ General advice: when starting a Step N (by doing a checkout on "StepN" branch), 
 
 To start, checkout `Step1` branch and follow [Step1 guide](doc/Step1.md)
 
-
-TODO [Reads with validators](https://www.playframework.com/documentation/2.7.x/ScalaJsonCombinators#Validation-with-Reads)
-
-## Coming soon... 
-Not covered for now: [JSON Transormers](https://www.playframework.com/documentation/2.7.x/ScalaJsonTransformers)
