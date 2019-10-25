@@ -57,9 +57,9 @@ object Step4 {
 	// We want a light view of Movie JSON (for example: returned in an http request) with only movie name and author.
 	//TODO 4.3.1 Create a Writes[Movie] that create a JSON object with only needed attributes.
 	def writesSimpleJsObj: Writes[Movie] = Writes { movie =>
-		movie.author.foldLeft(Json.obj("name" -> movie.name)) { (jsObj, author) =>
-		jsObj + ("author", JsString(author.name))
-		}
+
+
+		???
 	}
 	//TODO 4.3.2 Create a Writes[Movie] using explicit pathes (__ \ "attr").writes... and Movie.unapply
 	// BUT You need one more thing because Movie.unapply is giving all attributes in a tuple and
