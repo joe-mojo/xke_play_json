@@ -21,7 +21,7 @@ object Step5 {
 	val PickMetasFromMovie: Reads[JsValue] = (__ \ "additionalInfo" \ "metas").json.pick
 
 	//TODO 5.2.1 create a reads that pick additionalInfo.metas value and validates it is a JsArray
-	val PickMetasArrayFromMovie: Reads[JsArray] = (__ \ "additionalInfo" \ "metas").json.pick[JsArray]
+	val PickMetasArrayFromMovie: Reads[JsArray] = null
 
 	//TODO 5.3.1 create a reads that extract the additionalInfo.metas branch in the JSON of a movie
 	val PickBranchFromMovie: Reads[JsObject] = null
@@ -40,7 +40,7 @@ object Step5 {
 	def pickMetas(jsval: JsValue): JsResult[JsValue] = PickMetasFromMovie.reads(jsval)
 
 	//TODO 5.2.2 create a function that uses PickMetasArrayFromMovie to return the value of additionalInfo.metas as a JsArray
-	def pickMetasArray(jsval: JsValue): JsResult[JsArray] = PickMetasArrayFromMovie.reads(jsval)
+	def pickMetasArray(jsval: JsValue): JsResult[JsArray] = ???
 
 	//TODO 5.3.2 create a function that uses PickBranchFromMovie to return a JSON of Movie that contains only the additionalInfo.metas branch
 	def pickMetasBranch(jsval: JsValue): JsResult[JsObject] = ???
