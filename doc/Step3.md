@@ -55,7 +55,7 @@ Complete TODOs 3.x in the followings:
 
 The tests about Writes should pass in the following test suites:
 
- - [`Step3_WritesSpec`](../src/test/scala/service/Step3_WritesScpec.scala)
+ - [`Step3_WritesSpec`](../src/test/scala/service/Step3_WritesSpec.scala)
  - [`InvoiceSpec`](../src/test/scala/models/InvoiceSpec.scala)
  - [`MovieSpec`](../src/test/scala/models/MovieSpec.scala)
  - [`MovieEventSpec`](../src/test/scala/models/MovieEventSpec.scala)

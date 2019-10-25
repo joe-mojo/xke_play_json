@@ -16,4 +16,8 @@ That said, JSON transformers can be useful beyond "coast-to-coast" design. They 
 
 Complete TODOs 5.x in the followings:
 
- - [`service.Step5`](../src/main/scala/service/Step5.scala) 
+ - [`service.Step5`](../src/main/scala/service/Step5.scala)
+ 
+The tests should pass in the following test suites:
+
+ - [`Step5Spec`](../src/test/scala/service/Step5Spec.scala)
