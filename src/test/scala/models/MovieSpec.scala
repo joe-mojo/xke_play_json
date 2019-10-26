@@ -129,5 +129,25 @@ class MovieSpec extends FunSpec with Matchers with Inside {
     }
 
   }
+
+  describe("A movie author") {
+    it("should read Author from a string") {
+      val inputJson = Json.obj("author" -> JsString("Todd Phillips"))
+
+      (inputJson \ "author").validate[Author] should matchPattern {
+        case JsSuccess(Author("Todd Phillips"), _) =>
+      }
+
+      Json.parse(""""Mel Brooks"""").validate[Author] should matchPattern {
+        case JsSuccess(Author("Mel Brooks"), _) =>
+      }
+
+    }
+
+    it("should write its JSON as a string") {
+      Json.toJson(Author("Todd Phillips")) shouldBe JsString("Todd Phillips")
+    }
+
+  }
 }
 
