@@ -31,13 +31,13 @@ object Customer {
    TODO 3.8.3 create writes for Customer
    */
   implicit val writes: Writes[Customer] = {
-    (
-        (__ \ "firstName").write[String] and
-        (__ \ "lastName").write[String] and
-        OWrites.apply[Address] { address =>
-          Json.toJson(address).as[JsObject]
-        }
-    )(unlift(Customer.unapply))
+    //3.8.3 here
+
+
+
+
+
+    new Writes[Customer] { override def writes(o: Customer): JsValue = JsNull } //TODO remove this line
   }
 }
 
@@ -51,9 +51,9 @@ case class Address(
 )
 
 object Address {
-  //Because each attribute of Address type has a Reads defined, Reads[Address] is given for free
+  //Because each attribute type of Address has a Reads defined, Reads[Address] is given for free
   implicit val reads: Reads[Address] = Json.reads[Address]
-  implicit val writes: Writes[Address] = Json.writes[Address]
+  implicit val writes: Writes[Address] = null //3.8.2 replace null by the most simple Writes. Why can we use it here ?
 
 }
 
@@ -67,7 +67,7 @@ object AddressNumber {
     case n@addressNumberRegx() => new AddressNumber(n)
   }
   implicit val writes: Writes[AddressNumber] = Writes[AddressNumber] { number =>
-    JsString(number.value)
+    JsNull //3.8.1: fix this !
   }
 
   def apply(value: String): Option[AddressNumber] = {
@@ -83,9 +83,9 @@ case class Street(value: String) extends AnyVal {
 }
 object Street {
   implicit val reads: Reads[Street] = Reads.of[String].map(Street(_))
-  implicit val writes: Writes[Street] = Writes[Street] { street =>
-    JsString(street.value)
-  }
+  implicit val writes: Writes[Street] = null //3.8.1
+
+
   implicit def fromString(value: String): Street = Street(value)
 }
 
@@ -94,9 +94,9 @@ case class PostalCode(value: String) extends AnyVal {
 }
 object PostalCode {
   implicit val reads: Reads[PostalCode] = Reads.of[String].map(PostalCode(_))
-  implicit val writes: Writes[PostalCode] = Writes[PostalCode] { postalCode =>
-    JsString(postalCode.value)
-  }
+  implicit val writes: Writes[PostalCode] = null //3.8.1
+
+
   implicit def fromString(value: String): PostalCode = PostalCode(value)
 }
 
