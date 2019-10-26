@@ -78,13 +78,13 @@ object MovieUpdated {
 	 TODO 3.7.2 create Writes of MovieUpdated
 	  Same observations as 3.7.1
 	 */
-	implicit val writes: Writes[MovieUpdated] = Writes { evt =>
-		Json.obj(
-			"eventType" -> JsString("updated"),
-			"dataType" -> JsString("movie"),
-			"data" -> Json.toJson(evt.data)
-		)
-	}
+	implicit val writes: Writes[MovieUpdated] = null
+
+
+
+
+
+
 
   object fromJson {
     def unapply(message: JsValue): Option[MovieUpdated] = message.asOpt[MovieUpdated]
