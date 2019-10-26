@@ -134,14 +134,14 @@ object MovieEvent {
 	   < Yes, this will allow this Reads to use them; but they sometime could be refactored
 	 */
 	implicit val reads: Reads[MovieEvent] = Reads {
-		case jsObj: JsObject =>
 
 
 
 
 
-			null
-		case other =>
+
+
+
 			null
 	}
 	/*
