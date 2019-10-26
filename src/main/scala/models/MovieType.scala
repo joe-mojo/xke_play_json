@@ -47,30 +47,30 @@ object MovieType {
     2) by passing a read function to `Reads.apply(f: JsValue => JsResult[A])`
     The second one is slightly more concise
    */
-  val readsByReadsImpl: Reads[MovieType] = new Reads[MovieType] {
-    override def reads(json: JsValue): JsResult[MovieType] = json match {
-      case JsString(Horror.value) => JsSuccess(Horror)
-      case JsString(Comedy.value) => JsSuccess(Comedy)
-      case JsString(Romance.value) => JsSuccess(Romance)
-      case JsString(SciFi.value) => JsSuccess(SciFi)
-      case JsString(Action.value) => JsSuccess(Action)
-      case JsString(Aventure.value) => JsSuccess(Aventure)
-      case JsString(Thriller.value) => JsSuccess(Thriller)
-      case JsString(Crime.value) => JsSuccess(Crime)
-      case _ => JsError("Unclassified movie")
-    }
-  }
+  val readsByReadsImpl: Reads[MovieType] = null
 
-  val readsWithReadsApply: Reads[MovieType] = Reads {
-    case JsString(Horror.value) => JsSuccess(Horror)
-    case JsString(Comedy.value) => JsSuccess(Comedy)
-    case JsString(Romance.value) => JsSuccess(Romance)
-    case JsString(SciFi.value) => JsSuccess(SciFi)
-    case JsString(Action.value) => JsSuccess(Action)
-    case JsString(Aventure.value) => JsSuccess(Aventure)
-    case JsString(Crime.value) => JsSuccess(Crime)
-    case _ => JsError("Unclassified movie")
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+  val readsWithReadsApply: Reads[MovieType] = null
+
+
+
+
+
+
+
+
+
   implicit val reads: Reads[MovieType] = readsWithReadsApply // <-- choose you preferred Reads[MovieType]
 
   /*
