@@ -67,12 +67,12 @@ object Author {
 	 */
 	val writesByPath: Writes[Author] = {
 		//call write on root then contramap
-		__.write[String].contramap(_.name)
+		null
 	}
 
 	val writesByStringWriter: Writes[Author] = {
 		//ask Writes to give you the Writes of String then contramap
-		Writes.of[String].contramap(_.name)
+		null
 	}
 	implicit val writes: Writes[Author] = writesByStringWriter // <-- Assign to writes the Writer you want
 }
