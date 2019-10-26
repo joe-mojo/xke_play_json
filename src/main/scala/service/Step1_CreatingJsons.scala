@@ -20,7 +20,7 @@ object Step1_CreatingJsons {
 		""".stripMargin
 
 	def parseSnatch: JsValue = {
-		Json.parse(snatch)
+		???
 	}
 
 	/*
