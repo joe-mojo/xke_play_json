@@ -136,13 +136,13 @@ object MovieEvent {
 	implicit val reads: Reads[MovieEvent] = Reads {
 		case jsObj: JsObject =>
 			(jsObj \ "eventType").validate[String].flatMap {
-				case "created" => jsObj.validate[MovieCreated]
-				case "updated" => jsObj.validate[MovieUpdated]
-				case "deleted" => jsObj.validate[MovieDeleted]
-				case other => JsError(s"Unknown MovieEvent type: $other")
+				case "created" => null
+				case "updated" => null
+				case "deleted" => null
+				case other => null
 			}
 		case other =>
-			JsError(s"Cannot parse as MovieEvent something that is not an object: $other")
+			null
 	}
 	/*
 	 TODO 3.7.4 create Writes for MovieEvent
