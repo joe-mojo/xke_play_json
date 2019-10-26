@@ -38,7 +38,7 @@ object InvoiceLine {
 object Invoice {
 	//TODO 2.3 Create a Reads for Invoice (the easy way should work)
 	import InvoiceLine.readsList
-	implicit val reads: Reads[Invoice] = Json.reads[Invoice]
+	implicit val reads: Reads[Invoice] = null
 	//TODO 3.3 Create a Writes for Invoices (the easy way should work)
 	implicit val writes: Writes[Invoice] = null
 }
