@@ -149,7 +149,7 @@ object MovieEvent {
 	  This writes should make your program compile when writing an instance declared as MovieEvent.
 	  It must first determine the actual MovieEvent subtype, then use an already defined Writes.
 	   > What happens if you don't pass explicitly specific Writes to `Json.toJson` ?
-	   < StackOverflowError because Writes[MovieEvent] is calling itself because it is a suitable Writes for each subtype !
+
 	   > How to prevent stack overflow without passing explicit Writes ?
 
 
