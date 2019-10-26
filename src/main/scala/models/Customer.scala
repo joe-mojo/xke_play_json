@@ -18,11 +18,11 @@ object Customer {
     TODO 2.8.3 create Reads for Customer
    */
   implicit val reads: Reads[Customer] = {
-    (
-        (__ \ "firstName").read[String] and
-        (__ \ "lastName").read[String] and
-        Reads.of[Address] //A Reads[Address] must be defined, and it will be passed the complete JSON
-    )(Customer.apply _)
+    //2.8.3 here
+
+
+
+    new Reads[Customer] { override def reads(json: JsValue): JsResult[Customer] = JsError("Not implemented") } //TODO remove this line
   }
   /*
    TODO 3.8 create writes for Customer. Address root attributes must be at the same level as Customer attributes.
@@ -52,7 +52,7 @@ case class Address(
 
 object Address {
   //Because each attribute type of Address has a Reads defined, Reads[Address] is given for free
-  implicit val reads: Reads[Address] = Json.reads[Address]
+  implicit val reads: Reads[Address] = null //2.8.2
   implicit val writes: Writes[Address] = null //3.8.2 replace null by the most simple Writes. Why can we use it here ?
 
 }
@@ -63,9 +63,9 @@ case class AddressNumber(private val value: String) extends AnyVal {
 object AddressNumber {
   final val addressNumberRegx = """\d+(?:\s?[a-zA-Z]+)?|\d+-\d+""".r
   //TODO Note about 2.8.1: AddressNumber can be build only for strings matching the above regex.
-  implicit val reads: Reads[AddressNumber] = Reads.of[String].collect(JsonValidationError("string.not.matching.addressnumber")) {
-    case n@addressNumberRegx() => new AddressNumber(n)
-  }
+  implicit val reads: Reads[AddressNumber] = null //2.8.1
+
+
   implicit val writes: Writes[AddressNumber] = Writes[AddressNumber] { number =>
     JsNull //3.8.1: fix this !
   }
@@ -82,7 +82,7 @@ case class Street(value: String) extends AnyVal {
   override def toString = value
 }
 object Street {
-  implicit val reads: Reads[Street] = Reads.of[String].map(Street(_))
+  implicit val reads: Reads[Street] = null //2.8.1
   implicit val writes: Writes[Street] = null //3.8.1
 
 
@@ -93,7 +93,7 @@ case class PostalCode(value: String) extends AnyVal {
   override def toString = value
 }
 object PostalCode {
-  implicit val reads: Reads[PostalCode] = Reads.of[String].map(PostalCode(_))
+  implicit val reads: Reads[PostalCode] = null //2.8.1
   implicit val writes: Writes[PostalCode] = null //3.8.1
 
 
