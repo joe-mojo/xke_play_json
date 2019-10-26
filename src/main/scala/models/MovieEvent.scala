@@ -66,13 +66,13 @@ object MovieUpdated {
 	 TODO 2.7.2 create Reads of MovieUpdated
 	 */
 	implicit val reads: Reads[MovieUpdated] = Reads {
-		case parsed: JsObject =>
-			for {
-				evtType <- (parsed \ "eventType").validate[String] if evtType == "updated"
-				dataType <- (parsed \ "dataType").validate[String] if dataType == "movie"
-				movieData <- (parsed \ "data").validate[Movie]
-			} yield MovieUpdated(movieData)
-		case otherJsValue => JsError(s"Not a MovieUpdated because not even a JsObject: $otherJsValue")
+
+
+
+
+
+
+		null
 	}
 	/*
 	 TODO 3.7.2 create Writes of MovieUpdated
