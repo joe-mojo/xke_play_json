@@ -53,11 +53,11 @@ object Author {
 	 */
 	val readsByPath: Reads[Author] = {
 		//First way: you call reads on root then map
-		__.read[String].map(Author(_))
+		null
 	}
 	val readsByStringReader: Reads[Author] = {
 		//Second way: you ask Reads to give you the Reads of String then map
-		Reads.of[String].map(Author.apply)
+		null
 	}
 	implicit val reads: Reads[Author] = readsByStringReader // <-- Assign to reads the Reader you want
 	/*
