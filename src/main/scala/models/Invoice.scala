@@ -19,7 +19,7 @@ case class Discount(label: String, value: BigDecimal)
 object Discount {
 	//TODO 2.1 Create a Reads for Discount (the easy way should work)
 	//We have a free Discount reader because Discount has only mandatory attributes of basic type
-	implicit val reads: Reads[Discount] = Json.reads[Discount]
+	implicit val reads: Reads[Discount] = null
 	//TODO 3.1 Create a Writes for Discount (the easy way should work)
 	implicit val writes: Writes[Discount] = null
 }
