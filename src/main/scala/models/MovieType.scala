@@ -78,9 +78,9 @@ object MovieType {
    As with 2.6, there is 2 syntaxes. One by implementing writes method of Writes trait, another by passing a function to Writes.apply.
    Once again, the second one is more concise.
    */
-  val writesWithWritesImpl: Writes[MovieType] = new Writes[MovieType] {
-    override def writes(o: MovieType): JsValue = JsString(o.value)
-  }
-  val writesWithWritesApply: Writes[MovieType] = Writes(movieType => JsString(movieType.value))
+  val writesWithWritesImpl: Writes[MovieType] = null
+
+
+  val writesWithWritesApply: Writes[MovieType] = null
   implicit val writes: Writes[MovieType] = writesWithWritesApply // <-- choose you preferred Writes[MovieType]
 }
