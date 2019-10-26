@@ -19,13 +19,13 @@ object Movie {
 	{"startTimestamp": 974271600000, "name": "Snatch", "additionalInfo" : "Whatever you want"}
 	*/
 	implicit val reads: Reads[Movie] = {
-		(
-			(__ \ "startTimestamp").read[Long] and
-			(__ \ "name").read[String] and
-			(__ \ "additionalInfo").read[JsValue] and
-			(__ \ "author").readNullable[Author] and
-			(__ \ "types").readWithDefault[Seq[MovieType]](Seq.empty)
-		) (Movie.apply _)
+
+
+
+
+
+
+		null
 	}
 	/*
 	TODO 3.5 Create a custom Writes for Movie. In expected JSON, the timestamp attribute is named "startTimestamp"
