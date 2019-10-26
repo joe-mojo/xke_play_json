@@ -21,7 +21,7 @@ object Discount {
 	//We have a free Discount reader because Discount has only mandatory attributes of basic type
 	implicit val reads: Reads[Discount] = Json.reads[Discount]
 	//TODO 3.1 Create a Writes for Discount (the easy way should work)
-	implicit val writes: Writes[Discount] = Json.writes[Discount]
+	implicit val writes: Writes[Discount] = null
 }
 
 object InvoiceLine {
