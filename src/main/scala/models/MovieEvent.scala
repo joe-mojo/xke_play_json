@@ -31,12 +31,12 @@ object MovieCreated {
 	 */
 	implicit val readsWithoutEx: Reads[MovieCreated] = Reads {
 		case parsed: JsObject =>
-			for {
-				evtType <- (parsed \ "eventType").validate[String] if evtType == "created"
-				dataType <-  (parsed \ "dataType").validate[String] if dataType == "movie"
-				movieData <- (parsed \ "data").validate[Movie]
-			} yield MovieCreated(movieData)
-		case otherJsValue => JsError(s"A JSON object is expected for MovieCreated: $otherJsValue")
+
+
+
+
+			null
+		case otherJsValue => null
 	}
 
 	/*
