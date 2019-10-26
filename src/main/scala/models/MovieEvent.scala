@@ -156,9 +156,9 @@ object MovieEvent {
 	   > How do sealed traits help us here ?
 	   < compiler can tell if we forgot a MovieEvent subtype
 	 */
-	implicit val writes: Writes[MovieEvent] = Writes {
-		case evt: MovieCreated => Json.toJson(evt)(MovieCreated.writes)
-		case evt: MovieUpdated => Json.toJson(evt)(MovieUpdated.writes)
-		case evt: MovieDeleted => Json.toJson(evt)(MovieDeleted.writes)
-	}
+	implicit val writes: Writes[MovieEvent] = null
+
+
+
+
 }
