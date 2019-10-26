@@ -31,13 +31,13 @@ object Movie {
 	TODO 3.5 Create a custom Writes for Movie. In expected JSON, the timestamp attribute is named "startTimestamp"
 	 */
 	implicit val writes: Writes[Movie] = {
-		(
-			(__ \ "startTimestamp").write[Long] and
-			(__ \ "name").write[String] and
-			(__ \ "additionalInfo").write[JsValue] and
-			(__ \ "author").writeNullable[Author] and
-			(__ \ "types").write[Seq[MovieType]]
-		) (unlift(Movie.unapply))
+
+
+
+
+
+
+		null
 	}
 }
 
