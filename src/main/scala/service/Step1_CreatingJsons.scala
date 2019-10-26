@@ -54,7 +54,7 @@ object Step1_CreatingJsons {
 	  must NOT be coerced to Number and return false
 	 */
 	def checkImdbScore(jsMovie: JsObject): Boolean = {
-		(jsMovie \ "additionalInfo" \ "imdbScore").validate[JsNumber].fold(_ => false, n => n.value >= 0 && n.value <= 10)
+		???
 	}
 
 }
