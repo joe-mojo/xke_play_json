@@ -32,7 +32,7 @@ object InvoiceLine {
 	//TODO 2.2.2 For List[InvoiceLine]. You can have a Reads for Seq[InvoiceLine] for free; then use map to get a List from Seq
 	implicit val readsList: Reads[List[InvoiceLine]] = Reads.seq[InvoiceLine].map(_.toList)
 	//TODO 3.2 Create a Writes for InvoiceLine (the easy way should work)
-	implicit val writes: Writes[InvoiceLine] = Json.writes[InvoiceLine]
+	implicit val writes: Writes[InvoiceLine] = null
 }
 
 object Invoice {
