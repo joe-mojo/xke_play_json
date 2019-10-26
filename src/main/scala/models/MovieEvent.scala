@@ -151,8 +151,8 @@ object MovieEvent {
 	   > What happens if you don't pass explicitly specific Writes to `Json.toJson` ?
 	   < StackOverflowError because Writes[MovieEvent] is calling itself because it is a suitable Writes for each subtype !
 	   > How to prevent stack overflow without passing explicit Writes ?
-	   < Isolate implicits Writes&Reads in a specific object in a specific package, like "com.company.appname.json.http.Implicits" or "com.company.appname.json.db.Implicits"
-	     and import only needed implicits in each scope using Json.*
+
+
 	   > How do sealed traits help us here ?
 
 	 */
