@@ -46,11 +46,11 @@ object MovieCreated {
 	  - one JSON attribute contains an object for which we already have a Writes (created in 3.5). We must use it.
 	 */
 	implicit val writes: Writes[MovieCreated] = Writes { evt =>
-		Json.obj(
-			"eventType" -> JsString("created"),
-			"dataType" -> JsString("movie"),
-			"data" -> Json.toJson(evt.data)
-		)
+
+
+
+
+		JsNull
 	}
 
 	object fromJson {
