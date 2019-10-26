@@ -28,9 +28,9 @@ object InvoiceLine {
 	//TODO 2.2 Create 2 kinds of Reads for InvoiceLine
 	//TODO 2.2.1 For InvoiceLine itself (the easy way should work)
 	//We have a free Discount reader because Discount has attributes of basic type and an attributes of a type with a known reader (Discount)
-	implicit val reads: Reads[InvoiceLine] = Json.reads[InvoiceLine]
+	implicit val reads: Reads[InvoiceLine] = null
 	//TODO 2.2.2 For List[InvoiceLine]. You can have a Reads for Seq[InvoiceLine] for free; then use map to get a List from Seq
-	implicit val readsList: Reads[List[InvoiceLine]] = Reads.seq[InvoiceLine].map(_.toList)
+	implicit val readsList: Reads[List[InvoiceLine]] = null
 	//TODO 3.2 Create a Writes for InvoiceLine (the easy way should work)
 	implicit val writes: Writes[InvoiceLine] = null
 }
