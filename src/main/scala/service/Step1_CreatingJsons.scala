@@ -44,8 +44,8 @@ object Step1_CreatingJsons {
 	 */
 	def checkThisJsonMovie(jsMovie: JsObject): (Boolean, Boolean) = {
 		(
-				(jsMovie \ "name").validate[String].fold(_ => false, _ => true),
-				(jsMovie \ "additionalInfo" \ "imdbScore").validate[BigDecimal].fold(_ => false, n =>  n >= 0 && n<= 10)
+				???,
+				???
 		)
 	}
 
