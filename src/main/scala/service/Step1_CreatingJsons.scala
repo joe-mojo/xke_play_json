@@ -45,7 +45,7 @@ object Step1_CreatingJsons {
 	def checkThisJsonMovie(jsMovie: JsObject): (Boolean, Boolean) = {
 		(
 				(jsMovie \ "name").validate[String].fold(_ => false, _ => true),
-				(jsMovie \ "additionalInfo" \ "imdbScore").validate[BigDecimal].fold(_ => false, n =>  n >= 0 && n<= 10),
+				(jsMovie \ "additionalInfo" \ "imdbScore").validate[BigDecimal].fold(_ => false, n =>  n >= 0 && n<= 10)
 		)
 	}
 
@@ -56,9 +56,5 @@ object Step1_CreatingJsons {
 	def checkImdbScore(jsMovie: JsObject): Boolean = {
 		(jsMovie \ "additionalInfo" \ "imdbScore").validate[JsNumber].fold(_ => false, n => n.value >= 0 && n.value <= 10)
 	}
-
-	//TODO 1.5 See inside JsSuccess and JSError
-
-	//TODO 1.6 validate using JsSuccess and JsError instead of Boolean
 
 }
