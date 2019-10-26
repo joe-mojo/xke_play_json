@@ -31,10 +31,10 @@ object Step1_CreatingJsons {
 	   }
 	 */
 	def createYourJson: JsObject = {
-		Json.obj(
-			"type" -> JsString("Point"),
-			"coordinates" -> Json.arr(BigDecimal(2.3088449), BigDecimal(48.8753487))
-		)
+
+
+
+		???
 	}
 
 	/*
