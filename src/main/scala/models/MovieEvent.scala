@@ -135,12 +135,12 @@ object MovieEvent {
 	 */
 	implicit val reads: Reads[MovieEvent] = Reads {
 		case jsObj: JsObject =>
-			(jsObj \ "eventType").validate[String].flatMap {
-				case "created" => null
-				case "updated" => null
-				case "deleted" => null
-				case other => null
-			}
+
+
+
+
+
+			null
 		case other =>
 			null
 	}
